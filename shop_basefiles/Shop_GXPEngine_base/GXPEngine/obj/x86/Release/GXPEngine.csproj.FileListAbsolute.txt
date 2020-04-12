@@ -1,0 +1,3 @@
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/bin/Release/GXPEngine.exe
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Release/GXPEngine.csproj.CoreCompileInputs.cache
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Release/GXPEngine.exe

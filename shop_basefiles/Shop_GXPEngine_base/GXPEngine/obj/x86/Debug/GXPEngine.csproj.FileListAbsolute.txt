@@ -34,3 +34,9 @@ C:/Users/Yiwei/Downloads/software_architecture_assignment_basefiles/shop_basefil
 /Users/macbook/Downloads/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.csproj.CoreCompileInputs.cache
 /Users/macbook/Downloads/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.exe
 /Users/macbook/Downloads/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.pdb
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/bin/Debug/GXPEngine.exe
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/bin/Debug/GXPEngine.pdb
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.csproj.CoreCompileInputs.cache
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.exe
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.pdb
+/Users/macbook/Documents/Projects/Software-Architecture/shop_basefiles/Shop_GXPEngine_base/GXPEngine/obj/x86/Debug/GXPEngine.csprojAssemblyReference.cache
