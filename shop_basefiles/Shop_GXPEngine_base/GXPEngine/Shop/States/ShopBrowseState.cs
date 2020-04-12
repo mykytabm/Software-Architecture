@@ -1,11 +1,11 @@
 ﻿using System;
 using GXPEngine;
-
 namespace States
 {
     using Model;
     using View;
     using Controller;
+    using System.Collections.Generic;
 
     public class ShopBrowseState : GameObject
     {
@@ -16,10 +16,10 @@ namespace States
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopBrowseState()
         //------------------------------------------------------------------------------------------------------------------------
-        public ShopBrowseState()
+        public ShopBrowseState(List<Item> items)
         {
             //create shop
-            ShopModel shop = new ShopModel();
+            ShopModel shop = new ShopModel(items);
 
             //create controller
             shopController = new ShopController(shop);

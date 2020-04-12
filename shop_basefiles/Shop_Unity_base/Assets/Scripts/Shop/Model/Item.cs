@@ -5,7 +5,7 @@
     {
         public readonly string name;
         public readonly string iconName;
-        public int amount { get; private set; }
+        public int amount { get; set; }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Item()
@@ -16,6 +16,5 @@
             this.iconName = iconName;
             this.amount = amount;
         }
-
     }
 }

@@ -35,7 +35,8 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Browse()
         //------------------------------------------------------------------------------------------------------------------------
-        public void Browse() {
+        public void Browse()
+        {
             shopModel.SelectItemByIndex(0); //right now all this function does is select the first item in shopModel.
         }
 

@@ -16,9 +16,9 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopModel()
         //------------------------------------------------------------------------------------------------------------------------        
-        public ShopModel()
+        public ShopModel(List<Item> pItems)
         {
-            PopulateInventory(16); //currently, it has 16 items
+            itemList = pItems;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -148,19 +148,34 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
-        //not implemented yet
-        public void Buy()
+        //not implemented yet TODO
+        public bool Buy()
         {
-            AddMessage("You can't buy this item yet!");
+            Item selectedItem = GetSelectedItem();
+            if (selectedItem == null)
+            {
+                AddMessage("You can't buy this item!");
+                return false;
+            }
+            selectedItem.amount--;
+
+            if (selectedItem.amount <= 0)
+            {
+                itemList.Remove(selectedItem);
+            }
+            return true;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Sell()
         //------------------------------------------------------------------------------------------------------------------------        
-        //not implemented yet
+        //not implemented yet TODO
         public void Sell()
         {
-            AddMessage("You can't sell this item yet!");
+            if (GetSelectedItem() != null)
+            {
+                GetSelectedItem().amount++;
+            }
         }
 
     }
