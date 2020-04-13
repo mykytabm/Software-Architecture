@@ -48,7 +48,8 @@ namespace View
             graphics.DrawString("Use ARROWKEYS to navigate. Press SPACE to buy, BKSPACE to sell.", SystemFonts.CaptionFont, Brushes.White, 0, 0);
 
             string[] messages = shop.GetMessages();
-            for (int index = 0; index < messages.Length; index++) {
+            for (int index = 0; index < messages.Length; index++)
+            {
                 String message = messages[index];
                 graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.Black, 0, FontHeight + index * FontHeight);
             }

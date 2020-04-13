@@ -4,7 +4,6 @@
     using System.Drawing;
     using GXPEngine;
     using GXPEngine.Core;
-
     using Model;
     using Controller;
 

@@ -1,6 +1,7 @@
 ﻿using System;
+using Core;
+using Enums;
 using Model;
-using Utils;
 namespace Items
 {
     public class Weapon : Item

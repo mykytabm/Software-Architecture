@@ -1,7 +1,6 @@
-﻿using System;
-using Model;
-using Items;
-using Utils;
+﻿using Items;
+using Enums;
+
 namespace Interfaces
 {
     public interface ItemFactory

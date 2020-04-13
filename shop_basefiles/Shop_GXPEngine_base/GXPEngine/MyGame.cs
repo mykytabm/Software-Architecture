@@ -1,9 +1,8 @@
-using Character;
+using Core;
 using GXPEngine;
 using States;
-using Utils;
-using Interfaces;
 using Model;
+using Interfaces;
 using System.Collections.Generic;
 
 public class MyGame : Game

@@ -1,6 +1,7 @@
 ﻿using System;
+using Core;
 using Model;
-using Utils;
+using Enums;
 namespace Items
 {
     public class Potion : Item

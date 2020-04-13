@@ -1,6 +1,7 @@
 ﻿namespace Controller
 {
     using System;
+    using Core;
     using Model;
 
     //This class provides a controller for a ShopModel. The Controller acts as a public interface for a ShopModel.
