@@ -2,22 +2,29 @@
 {
     using System;
     using System.Collections.Generic;
+    using Utils;
+    using View;
 
     //This class holds the model of our Shop. It contains an ItemList. In its current setup, view and controller need to get
     //data via polling. Advisable is, to set up an event system for better integration with View and Controller.
-    public class ShopModel
+    public class ShopModel : IObservable<ShopModelInfo>
     {
         const int MaxMessageQueueCount = 4; //it caches the last four messages
         private List<string> messages = new List<string>();
 
         private List<Item> itemList = new List<Item>(); //items in the store
         private int selectedItemIndex = 0; //selected item index
+        private ShopModelInfo _modelInfo;
+
+        private List<IObserver<ShopModelInfo>> _observers;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopModel()
         //------------------------------------------------------------------------------------------------------------------------        
         public ShopModel(List<Item> pItems)
         {
+            _observers = new List<IObserver<ShopModelInfo>>();
+
             itemList = pItems;
         }
 
@@ -175,8 +182,22 @@
             if (GetSelectedItem() != null)
             {
                 GetSelectedItem().amount++;
+                foreach (var observer in _observers)
+                {
+                    observer.OnNext(null);
+                }
             }
         }
-
+        public IDisposable Subscribe(IObserver<ShopModelInfo> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+                // Provide observer with existing data.
+                observer.OnNext(this._modelInfo);
+            }
+            return new Unsubscriber<ShopModelInfo>(_observers, observer);
+        }
     }
 }
