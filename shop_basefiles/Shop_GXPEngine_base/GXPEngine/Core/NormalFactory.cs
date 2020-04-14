@@ -2,19 +2,25 @@
 using Interfaces;
 using Items;
 using Enums;
-
+using Utils;
 namespace Core
 {
     public class NormalFactory : ItemFactory
     {
-        public Potion CreatePotion(string pName, string Pimage, int pAmount, EPotion pType)
+        public Potion CreatePotion(int pSeed)
         {
-            return new Potion(pName, "item", pAmount, pType);
+            var rand = new Random(pSeed);
+            var amount = rand.Next(1, 20);
+            var type = Utils.Utils.RandomEnumValue<EPotion>(pSeed);
+            return new Potion($"Potion of {type}", "item", amount, type);
         }
 
-        public Weapon CreateWeapon(string pName, string Pimage, int pAmount, EWeapon pType)
+        public Weapon CreateWeapon(int pSeed)
         {
-            return new Weapon(pName, Pimage, pAmount, pType);
+            var rand = new Random(pSeed);
+            var amount = rand.Next(1, 10);
+            var type = Utils.Utils.RandomEnumValue<EWeapon>(pSeed);
+            return new Weapon($"{type}", "item", amount, type);
         }
     }
 }

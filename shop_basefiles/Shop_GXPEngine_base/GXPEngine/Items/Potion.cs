@@ -6,11 +6,11 @@ namespace Items
 {
     public class Potion : Item
     {
-        private readonly EPotion _type;
+        public readonly EPotion type;
         public Potion(string name, string iconName, int amount, EPotion pType)
             : base(name, iconName, amount)
         {
-            _type = pType;
+            type = pType;
         }
     }
 }

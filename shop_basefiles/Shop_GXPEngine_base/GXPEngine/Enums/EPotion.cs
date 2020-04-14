@@ -2,6 +2,7 @@
 {
     public enum EPotion
     {
+        none,
         Strength,
         Invisibility,
         Agility,
