@@ -27,11 +27,13 @@ namespace States
             //create shop view
             shopView = new ShopView(shop, shopController);
             AddChild(shopView);
+            shopView.Subscribe(shop);
             Helper.AlignToCenter(shopView, true, true);
 
             //create message view
             shopMessageView = new ShopMessageView(shop);
             AddChild(shopMessageView);
+            shopMessageView.Subscribe(shop);
             Helper.AlignToCenter(shopMessageView, true, false);
 
         }
@@ -42,8 +44,8 @@ namespace States
         //update the views
         public void Step()
         {
-            shopView.Step();
-            shopMessageView.Step();
+            //shopView.Step();
+            //shopMessageView.Step();
         }
 
     }

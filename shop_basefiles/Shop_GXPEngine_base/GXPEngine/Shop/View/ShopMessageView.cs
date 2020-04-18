@@ -2,11 +2,12 @@
 using System.Drawing;
 using GXPEngine;
 using Model;
+using Utils;
 
 namespace View
 {
     //This class will draw a messagebox containing messages from the Shop that is observed.
-    public class ShopMessageView : Canvas
+    public class ShopMessageView : Canvas, IObserver<ShopModelInfo>
     {
         const int FontHeight = 20;
 
@@ -18,6 +19,27 @@ namespace View
         public ShopMessageView(ShopModel shop) : base(800, 100)
         {
             this.shop = shop;
+        }
+
+        public void Subscribe(ShopModel pProvider)
+        {
+            pProvider.Subscribe(this);
+        }
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(ShopModelInfo value)
+        {
+            Console.WriteLine($"notification received in {this.GetType().ToString()}");
+            Step();
         }
 
         //------------------------------------------------------------------------------------------------------------------------

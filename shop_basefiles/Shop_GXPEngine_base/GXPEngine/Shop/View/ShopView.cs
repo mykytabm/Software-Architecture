@@ -1,14 +1,16 @@
 ﻿namespace View
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using GXPEngine;
     using GXPEngine.Core;
     using Model;
     using Controller;
+    using Utils;
 
     //This Class draws the icons for the items in the store
-    public class ShopView : Canvas
+    public class ShopView : Canvas, IObserver<ShopModelInfo>
     {
         const int Columns = 4;
         const int Spacing = 80;
@@ -168,7 +170,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawSelectedItem(Item item, int iconX, int iconY)
         {
-            if (Utils.Random(0, 2) == 0)
+            if (GXPEngine.Utils.Random(0, 2) == 0)
             {
                 DrawItem(item, iconX, iconY);
             }
@@ -184,6 +186,26 @@
                 iconCache.Add(filename, new Texture2D("media/" + filename + ".png"));
             }
             return iconCache[filename];
+        }
+
+        public void Subscribe(ShopModel pProvider)
+        {
+            pProvider.Subscribe(this);
+        }
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(ShopModelInfo value)
+        {
+            Console.WriteLine($"notification received in {this.GetType().ToString()}");
+            Step();
         }
     }
 }
