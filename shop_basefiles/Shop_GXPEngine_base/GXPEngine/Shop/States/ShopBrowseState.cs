@@ -44,8 +44,8 @@ namespace States
         //update the views
         public void Step()
         {
-            shopView.Step();
-            shopMessageView.Step();
+            //shopView.Step();
+            //shopMessageView.Step();
         }
 
     }

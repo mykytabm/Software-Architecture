@@ -24,20 +24,7 @@
         public ShopModel(List<Item> pItems)
         {
             _observers = new List<IObserver<ShopModelInfo>>();
-
             itemList = pItems;
-        }
-
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  PopulateInventory()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private void PopulateInventory(int itemCount)
-        {
-            for (int index = 0; index < itemCount; index++)
-            {
-                Item item = new Item("item", "item", 10); //item name, item icon, cost
-                itemList.Add(item);
-            }
         }
 
         //------------------------------------------------------------------------------------------------------------------------

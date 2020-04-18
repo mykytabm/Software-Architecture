@@ -56,6 +56,5 @@
         {
             shopModel.Sell();
         }
-
     }
 }
