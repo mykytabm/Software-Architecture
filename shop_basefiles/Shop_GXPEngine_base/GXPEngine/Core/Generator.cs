@@ -3,31 +3,40 @@ using Interfaces;
 using Items;
 using Enums;
 using Model;
+using System.Collections.Generic;
+
 namespace Core
 {
     public class Generator
     {
         private ItemFactory _factory;
-        private Random _rand;
-        private int _seed;
+        
 
         public Generator(ItemFactory pFactory)
         {
-
-            _rand = new Random(_seed);
             _factory = pFactory;
+
+        }
+
+        public List<Item> CreateRandomItems(int pNum)
+        {
+            var items = new List<Item>(pNum);
+            for (int i = 0; i < pNum; i++)
+            {
+                items.Add(CreateRandomItem());
+            }
+            return items;
         }
 
         public Item CreateRandomItem()
         {
-            _seed = (int)DateTime.Now.Ticks;
-            int itemType = _rand.Next(1, 3);
+            int itemType = Globals.random.Next(1, 3); //TODO: remove magic number
             switch (itemType)
             {
                 case 1:
-                    return _factory.CreatePotion(_seed);
+                    return _factory.CreatePotion(Globals.potionMaxAmount);
                 case 2:
-                    return _factory.CreateWeapon(_seed);
+                    return _factory.CreateWeapon(Globals.weaponMaxAmount);
             }
             return null;
         }

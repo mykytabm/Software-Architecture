@@ -1,20 +1,14 @@
 ﻿using System;
 namespace Core
 {
-    public class Component
+    public abstract class Component
     {
+        protected MBGameObject _owner;
+
         public Component()
         {
-
-        }
-        public void Remove()
-        {
-
-        }
-        public void Update()
-        {
-
         }
 
+        public abstract void Update();
     }
 }

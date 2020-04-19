@@ -205,7 +205,6 @@
         public void OnNext(ShopModelInfo value)
         {
             Console.WriteLine($"notification received in {this.GetType().ToString()}");
-            Step();
         }
     }
 }

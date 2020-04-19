@@ -3,10 +3,10 @@ namespace Utils
 {
     public static class Utils
     {
-        public static T RandomEnumValue<T>(int pSeed)
+        public static T RandomEnumValue<T>(Random pRandom)
         {
             var v = Enum.GetValues(typeof(T));
-            return (T)v.GetValue(new Random(pSeed).Next(1, v.Length));
+            return (T)v.GetValue(pRandom.Next(1, v.Length));
         }
     }
 }
