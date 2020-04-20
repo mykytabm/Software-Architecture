@@ -169,10 +169,7 @@
             if (GetSelectedItem() != null)
             {
                 GetSelectedItem().amount++;
-                foreach (var observer in _observers)
-                {
-                    observer.OnNext(null);
-                }
+              
             }
         }
         public IDisposable Subscribe(IObserver<ShopModelInfo> observer)

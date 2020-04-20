@@ -1,11 +1,11 @@
-﻿using Items;
-using Enums;
-
+﻿using System;
+using Items;
+using Model;
 namespace Interfaces
 {
     public interface ItemFactory
     {
-        Potion CreatePotion(int pSeed);
-        Weapon CreateWeapon(int pSeed);
+        Potion CreatePotion(int pMaxAmount);
+        Weapon CreateWeapon(int pMaxAmount);
     }
 }

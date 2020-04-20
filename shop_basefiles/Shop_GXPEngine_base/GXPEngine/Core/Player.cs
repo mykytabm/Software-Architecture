@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using GXPEngine;
 using Model;
+using Components;
+using Utils;
 namespace Core
 {
-    public class Player : GameObject
+    public class Player : MBGameObject
     {
         Inventory _inventory;
+        InputController _inputController;
         public Player()
         {
             _inventory = new Inventory(10);
+            _inputController = new InputController();
+            _inputController.AddEvent(new KeyEvent(Key.W, MoveUp));
+            AddComponent(_inputController);
         }
         public void Buy(Item pItem)
         {
@@ -17,6 +23,18 @@ namespace Core
         }
         public void Sell(Item pItem)
         {
+        }
+        public void MoveUp()
+        {
+            Console.WriteLine("moving up");
+        }
+        public void MoveDown()
+        {
+            Console.WriteLine("moving down");
+        }
+        public override void Update()
+        {
+            base.Update();
         }
     }
 

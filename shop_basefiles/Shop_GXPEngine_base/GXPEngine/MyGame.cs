@@ -4,6 +4,7 @@ using States;
 using Model;
 using Interfaces;
 using System.Collections.Generic;
+using System;
 
 public class MyGame : Game
 {
@@ -19,17 +20,21 @@ public class MyGame : Game
     //------------------------------------------------------------------------------------------------------------------------        
     public MyGame() : base(800, 600, false)
     {
+        CreateObjects();
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------
+    //                                                  CreateObjects()
+    //------------------------------------------------------------------------------------------------------------------------        
+    private void CreateObjects()
+    {
         _player = new Player();
-        new NormalFactory();
-        generator = new Generator(new NormalFactory());
         Player = _player;
-        var items = new List<Item>();
-        for (int i = 0; i < 10; i++)
-        {
-            var item = generator.CreateRandomItem();
-            items.Add(item);
-        }
-        _shopBrowseState = new ShopBrowseState(items);
+        generator = new Generator(new NormalFactory());
+
+        var shopItemList = generator.CreateRandomItems(10);
+        _shopBrowseState = new ShopBrowseState(shopItemList);
+
         AddChild(_player);
         AddChild(_shopBrowseState);
     }

@@ -8,7 +8,7 @@
     using Model;
     using Controller;
     using Utils;
-
+    using Core;
     //This Class draws the icons for the items in the store
     public class ShopView : Canvas, IObserver<ShopModelInfo>
     {
@@ -18,6 +18,7 @@
 
         private ShopModel shop;
         private ShopController shopController;
+        private ShopCommandExecutor _shopCommandManager;
 
         //the icon cache is built in here, that violates the S.R. principle.
         private Dictionary<string, Texture2D> iconCache;
@@ -29,7 +30,7 @@
         {
             this.shop = shop;
             this.shopController = shopController;
-
+            _shopCommandManager = new ShopCommandExecutor(shopController);
             iconCache = new Dictionary<string, Texture2D>();
 
             x = (game.width - width) / 2;
@@ -53,6 +54,7 @@
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
+                //_shopCommandManager.Execute()
                 MoveSelection(-1, 0);
             }
             if (Input.GetKeyDown(Key.RIGHT))
@@ -205,7 +207,6 @@
         public void OnNext(ShopModelInfo value)
         {
             Console.WriteLine($"notification received in {this.GetType().ToString()}");
-            Step();
         }
     }
 }
