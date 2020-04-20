@@ -10,9 +10,10 @@ namespace States
 
     public class ShopBrowseState : MBGameObject
     {
-        private ShopController shopController;
-        private ShopView shopView;
-        private ShopMessageView shopMessageView;
+        private ShopController _shopController;
+        private ShopView _shopView;
+        private ShopMessageView _shopMessageView;
+        public ShopCommandExecutor _shopCommandManager;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopBrowseState()
@@ -23,19 +24,21 @@ namespace States
             ShopModel shop = new ShopModel(items);
 
             //create controller
-            shopController = new ShopController(shop);
+            _shopController = new ShopController(shop);
 
             //create shop view
-            shopView = new ShopView(shop, shopController);
-            AddChild(shopView);
+            _shopView = new ShopView(shop, _shopController);
+            AddChild(_shopView);
             //shopView.Subscribe(shop);
-            Helper.AlignToCenter(shopView, true, true);
+            Helper.AlignToCenter(_shopView, true, true);
+
+            _shopCommandManager = new ShopCommandExecutor(_shopController);
 
             //create message view
-            shopMessageView = new ShopMessageView(shop);
-            AddChild(shopMessageView);
+            _shopMessageView = new ShopMessageView(shop);
+            AddChild(_shopMessageView);
             //shopMessageView.Subscribe(shop);
-            Helper.AlignToCenter(shopMessageView, true, false);
+            Helper.AlignToCenter(_shopMessageView, true, false);
 
         }
 
@@ -45,8 +48,8 @@ namespace States
         //update the views
         public void Step()
         {
-            shopView.Step();
-            shopMessageView.Step();
+            _shopView.Step();
+            _shopMessageView.Step();
         }
 
     }
