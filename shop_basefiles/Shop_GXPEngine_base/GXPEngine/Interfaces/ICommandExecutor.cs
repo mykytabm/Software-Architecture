@@ -1,8 +1,8 @@
 ﻿using System;
 namespace Interfaces
 {
-    public interface ICommandExecutor<TCommand>
-        where TCommand: ICommand
+    public interface ICommandExecutor<TCommand> : IService
+        where TCommand : ICommand
     {
         void Execute(TCommand pCommand);
     }

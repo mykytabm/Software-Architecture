@@ -33,7 +33,7 @@ namespace States
             Helper.AlignToCenter(_shopView, true, true);
 
             _shopCommandManager = new ShopCommandExecutor(_shopController);
-
+            ServiceLocator.Instance.AddService(_shopCommandManager);
             //create message view
             _shopMessageView = new ShopMessageView(shop);
             AddChild(_shopMessageView);

@@ -31,7 +31,6 @@ public class MyGame : Game
         _player = new Player();
         Player = _player;
         generator = new Generator(new NormalFactory());
-
         var shopItemList = generator.CreateRandomItems(10);
         _shopBrowseState = new ShopBrowseState(shopItemList);
 

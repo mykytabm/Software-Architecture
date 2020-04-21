@@ -9,6 +9,8 @@
     using Controller;
     using Utils;
     using Core;
+    using Commands;
+
     //This Class draws the icons for the items in the store
     public class ShopView : Canvas, IObserver<ShopModelInfo>
     {
@@ -16,6 +18,8 @@
         const int Spacing = 80;
         const int Margin = 18;
 
+        private int _selectedItemId;
+        private int _itemCount;
         private ShopModel shop;
         private ShopController shopController;
         private ShopCommandExecutor _shopCommandManager;
@@ -30,7 +34,7 @@
         {
             this.shop = shop;
             this.shopController = shopController;
-            _shopCommandManager = new ShopCommandExecutor(shopController);
+            _shopCommandManager = ServiceLocator.Instance.GetService<ShopCommandExecutor>();
             iconCache = new Dictionary<string, Texture2D>();
 
             x = (game.width - width) / 2;
@@ -54,20 +58,21 @@
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
-                //_shopCommandManager.Execute()
-                MoveSelection(-1, 0);
+                int newSelectionId = GetNewSelectedItemId(-1, 0);
+                _shopCommandManager.Execute(new MoveItemSelection(newSelectionId));
+
             }
             if (Input.GetKeyDown(Key.RIGHT))
             {
-                MoveSelection(1, 0);
+                GetNewSelectedItemId(1, 0);
             }
             if (Input.GetKeyDown(Key.UP))
             {
-                MoveSelection(0, -1);
+                GetNewSelectedItemId(0, -1);
             }
             if (Input.GetKeyDown(Key.DOWN))
             {
-                MoveSelection(0, 1);
+                GetNewSelectedItemId(0, 1);
             }
 
             if (Input.GetKeyDown(Key.SPACE))
@@ -83,23 +88,23 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  MoveSelection()
         //------------------------------------------------------------------------------------------------------------------------        
-        private void MoveSelection(int moveX, int moveY)
+        private int GetNewSelectedItemId(int moveX, int moveY)
         {
-            int itemIndex = shop.GetSelectedItemIndex();
-            int currentSelectionX = GetColumnByIndex(itemIndex);
-            int currentSelectionY = GetRowByIndex(itemIndex);
+            int currentSelectionX = GetColumnByIndex(_selectedItemId);
+            int currentSelectionY = GetRowByIndex(_selectedItemId);
             int requestedSelectionX = currentSelectionX + moveX;
             int requestedSelectionY = currentSelectionY + moveY;
 
             if (requestedSelectionX >= 0 && requestedSelectionX < Columns) //check horizontal boundaries
             {
                 int newItemIndex = GetIndexFromGridPosition(requestedSelectionX, requestedSelectionY);
-                if (newItemIndex >= 0 && newItemIndex <= shop.GetItemCount()) //check vertical boundaries
+                if (newItemIndex >= 0 && newItemIndex <= _itemCount) //check vertical boundaries
                 {
-                    Item item = shop.GetItemByIndex(newItemIndex);
-                    shopController.SelectItem(item);
+                    return newItemIndex;
                 }
+                return _selectedItemId;
             }
+            return _selectedItemId;
         }
 
         //------------------------------------------------------------------------------------------------------------------------

@@ -25,12 +25,16 @@
         //                                                  SelectItem()
         //------------------------------------------------------------------------------------------------------------------------
         //attempt to select an item
-        public void SelectItem(Item item)
+        public void SelectItem(Item pItem)
         {
-            if (item != null)
+            if (pItem != null)
             {
-                shopModel.SelectItem(item);
+                shopModel.SelectItem(pItem);
             }
+        }
+        public void SelectItem(int pIndex)
+        {
+            shopModel.SelectItemByIndex(pIndex);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
