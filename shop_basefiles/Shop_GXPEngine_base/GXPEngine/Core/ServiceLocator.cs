@@ -5,7 +5,7 @@ namespace Core
 {
     public class ServiceLocator : Singleton<ServiceLocator>
     {
-        private List<IService> _services;
+        private List<IService> _services = new List<IService>();
 
         public void AddService(IService pService)
         {

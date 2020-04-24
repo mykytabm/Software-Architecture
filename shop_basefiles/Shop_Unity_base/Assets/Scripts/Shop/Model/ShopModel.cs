@@ -7,24 +7,27 @@
 
     //This class holds the model of our Shop. It contains an ItemList. In its current setup, view and controller need to get
     //data via polling. Advisable is, to set up an event system for better integration with View and Controller.
-    public class ShopModel : IObservable<ShopModelInfo>
+    public class ShopModel : IObservable<ShopData>
     {
         const int MaxMessageQueueCount = 4; //it caches the last four messages
         private List<string> messages = new List<string>();
 
         private List<Item> itemList = new List<Item>(); //items in the store
         private int selectedItemIndex = 0; //selected item index
-        private ShopModelInfo _modelInfo;
+        private ShopData _shopData;
 
-        private List<IObserver<ShopModelInfo>> _observers;
+        private List<IObserver<ShopData>> _observers;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopModel()
         //------------------------------------------------------------------------------------------------------------------------        
         public ShopModel(List<Item> pItems)
         {
-            _observers = new List<IObserver<ShopModelInfo>>();
+            _observers = new List<IObserver<ShopData>>();
             itemList = pItems;
+            _shopData = new ShopData();
+            _shopData.selectedItemIndex = selectedItemIndex;
+            _shopData.itemCount = GetItemCount();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -68,6 +71,11 @@
             if (index >= 0 && index < itemList.Count)
             {
                 selectedItemIndex = index;
+
+                _shopData.selectedItemIndex = selectedItemIndex;
+                _shopData.itemCount = GetItemCount();
+                NotifyObservers(_shopData);
+
             }
         }
 
@@ -85,7 +93,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         //returns a list with all current items in the shop.
         public List<Item> GetItems()
-        {
+        {                                    //TODO: apply prototype
             return new List<Item>(itemList); //returns a copy of the list, so the original is kept intact, 
                                              //however this is shallow copy of the original list, so changes in 
                                              //the original list will likely influence the copy, apply 
@@ -169,19 +177,27 @@
             if (GetSelectedItem() != null)
             {
                 GetSelectedItem().amount++;
-              
             }
         }
-        public IDisposable Subscribe(IObserver<ShopModelInfo> observer)
+
+        private void NotifyObservers(ShopData pData)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(pData);
+            }
+        }
+
+        public IDisposable Subscribe(IObserver<ShopData> observer)
         {
             // Check whether observer is already registered. If not, add it
             if (!_observers.Contains(observer))
             {
                 _observers.Add(observer);
                 // Provide observer with existing data.
-                observer.OnNext(this._modelInfo);
+                observer.OnNext(_shopData);
             }
-            return new Unsubscriber<ShopModelInfo>(_observers, observer);
+            return new Unsubscriber<ShopData>(_observers, observer);
         }
     }
 }

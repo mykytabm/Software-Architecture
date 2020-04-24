@@ -12,7 +12,7 @@
     using Commands;
 
     //This Class draws the icons for the items in the store
-    public class ShopView : Canvas, IObserver<ShopModelInfo>
+    public class ShopView : Canvas, IObserver<ShopData>
     {
         const int Columns = 4;
         const int Spacing = 80;
@@ -36,7 +36,7 @@
             this.shopController = shopController;
             _shopCommandManager = ServiceLocator.Instance.GetService<ShopCommandExecutor>();
             iconCache = new Dictionary<string, Texture2D>();
-
+            Console.WriteLine($" current selected item: {_selectedItemId}");
             x = (game.width - width) / 2;
             y = (game.height - height) / 2;
         }
@@ -58,27 +58,29 @@
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
-                int newSelectionId = GetNewSelectedItemId(-1, 0);
-                _shopCommandManager.Execute(new MoveItemSelection(newSelectionId));
-
+                _shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(-1, 0)));
             }
+
             if (Input.GetKeyDown(Key.RIGHT))
             {
-                GetNewSelectedItemId(1, 0);
+                _shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(1, 0)));
             }
+
             if (Input.GetKeyDown(Key.UP))
             {
-                GetNewSelectedItemId(0, -1);
+                _shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(0, -1)));
             }
+
             if (Input.GetKeyDown(Key.DOWN))
             {
-                GetNewSelectedItemId(0, 1);
+                _shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(0, 1)));
             }
 
             if (Input.GetKeyDown(Key.SPACE))
             {
-                shopController.Buy();
+                _shopCommandManager.Execute(new BuyItemCommand());
             }
+
             if (Input.GetKeyDown(Key.BACKSPACE))
             {
                 shopController.Sell();
@@ -204,14 +206,15 @@
             throw new NotImplementedException();
         }
 
-        public void OnError(Exception error)
+        public void OnError(Exception pError)
         {
             throw new NotImplementedException();
         }
 
-        public void OnNext(ShopModelInfo value)
+        public void OnNext(ShopData pData)
         {
-            Console.WriteLine($"notification received in {this.GetType().ToString()}");
+            _selectedItemId = pData.selectedItemIndex;
+            _itemCount = pData.itemCount;
         }
     }
 }

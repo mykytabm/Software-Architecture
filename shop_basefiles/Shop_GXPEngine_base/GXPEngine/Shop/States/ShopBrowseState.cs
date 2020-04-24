@@ -26,18 +26,20 @@ namespace States
             //create controller
             _shopController = new ShopController(shop);
 
+            _shopCommandManager = new ShopCommandExecutor(_shopController);
+            ServiceLocator.Instance.AddService(_shopCommandManager);
+
             //create shop view
             _shopView = new ShopView(shop, _shopController);
             AddChild(_shopView);
-            //shopView.Subscribe(shop);
+            _shopView.Subscribe(shop);
             Helper.AlignToCenter(_shopView, true, true);
 
-            _shopCommandManager = new ShopCommandExecutor(_shopController);
-            ServiceLocator.Instance.AddService(_shopCommandManager);
+           
             //create message view
             _shopMessageView = new ShopMessageView(shop);
             AddChild(_shopMessageView);
-            //shopMessageView.Subscribe(shop);
+            _shopMessageView.Subscribe(shop);
             Helper.AlignToCenter(_shopMessageView, true, false);
 
         }

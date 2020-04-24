@@ -7,7 +7,7 @@ using Utils;
 namespace View
 {
     //This class will draw a messagebox containing messages from the Shop that is observed.
-    public class ShopMessageView : Canvas, IObserver<ShopModelInfo>
+    public class ShopMessageView : Canvas, IObserver<ShopData>
     {
         const int FontHeight = 20;
 
@@ -36,7 +36,7 @@ namespace View
             throw new NotImplementedException();
         }
 
-        public void OnNext(ShopModelInfo value)
+        public void OnNext(ShopData value)
         {
             Console.WriteLine($"notification received in {this.GetType().ToString()}");
         }
