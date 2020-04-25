@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using GXPEngine;
     using Utils;
     using View;
 
@@ -61,6 +62,9 @@
                 if (index >= 0)
                 {
                     _selectedItemIndex = index;
+
+                    UpdateShopData();
+                    NotifyObservers();
                 }
             }
         }
@@ -75,8 +79,7 @@
             {
                 _selectedItemIndex = index;
 
-                _shopData.selectedItemIndex = _selectedItemIndex;
-                _shopData.itemCount = GetItemCount();
+                UpdateShopData();
                 NotifyObservers();
 
             }
@@ -107,7 +110,7 @@
         //                                                  GetItemCount()
         //------------------------------------------------------------------------------------------------------------------------        
         //returns the number of items
-        public int GetItemCount()
+        private int GetItemCount()
         {
             return itemList.Count;
         }
@@ -166,10 +169,18 @@
 
             if (selectedItem.amount <= 0)
             {
+                Console.WriteLine("removing item");
                 itemList.Remove(selectedItem);
+                _selectedItemIndex =
+                    (int)Mathf.Clamp(_selectedItemIndex, 0, itemList.Count - 1);
+
             }
+            UpdateShopData();
+            NotifyObservers();
+
             return true;
         }
+
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Sell()
@@ -180,7 +191,16 @@
             if (GetSelectedItem() != null)
             {
                 GetSelectedItem().amount++;
+                UpdateShopData();
+                NotifyObservers();
             }
+        }
+
+        private void UpdateShopData()
+        {
+            _shopData.items = itemList;
+            _shopData.itemCount = itemList.Count;
+            _shopData.selectedItemIndex = _selectedItemIndex;
         }
 
         private void NotifyObservers()
@@ -198,8 +218,6 @@
             {
                 _observers.Add(observer);
                 // Provide observer with existing data.
-                Console.WriteLine("provide data");
-
                 observer.OnNext(_shopData);
             }
             return new Unsubscriber<ShopData>(_observers, observer);

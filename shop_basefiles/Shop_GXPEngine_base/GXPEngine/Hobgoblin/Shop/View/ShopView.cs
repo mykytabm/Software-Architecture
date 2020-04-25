@@ -71,44 +71,7 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  HandleNavigation()
         //------------------------------------------------------------------------------------------------------------------------        
-        private void HandleNavigation()
-        {
-            //if (Input.GetKeyDown(Key.LEFT))
-            //{
-            //    var newSelectionId = GetNewSelectedItemId(-1, 0);
-            //    var moveSelectionCommand = new MoveSelectionCommand(newSelectionId, shopController);
-
-            //    //_shopCommandManager.Execute(moveSelectionCommand);
-            //}
-
-            //if (Input.GetKeyDown(Key.RIGHT))
-            //{
-            //    var newSelectionId = GetNewSelectedItemId(1, 0);
-            //    var moveSelectionCommand = new MoveSelectionCommand(newSelectionId, shopController);
-            //    //_shopCommandManager.Execute(moveSelectionCommand);
-
-            //}
-
-            //if (Input.GetKeyDown(Key.UP))
-            //{
-            //    //_shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(0, -1)));
-            //}
-
-            //if (Input.GetKeyDown(Key.DOWN))
-            //{
-            //    //_shopCommandManager.Execute(new MoveSelectionCommand(GetNewSelectedItemId(0, 1)));
-            //}
-
-            //if (Input.GetKeyDown(Key.SPACE))
-            //{
-            //    //_shopCommandManager.Execute(new BuyItemCommand());
-            //}
-
-            //if (Input.GetKeyDown(Key.BACKSPACE))
-            //{
-            //    //shopController.Sell();
-            //}
-        }
+        private void HandleNavigation() { }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  MoveSelection()
@@ -181,7 +144,8 @@
                 }
                 else
                 {
-                    DrawItem(item, iconX, iconY);
+                    if (item != null)
+                        DrawItem(item, iconX, iconY);
                 }
             }
         }
@@ -236,10 +200,14 @@
 
         public void OnNext(ShopData pData)
         {
-            Console.WriteLine($"new selectedItemIndex : {pData.selectedItemIndex}");
+            _items = pData.items;
             _selectedItemId = pData.selectedItemIndex;
+            //Console.WriteLine(pData.items.Count);
             _itemCount = pData.itemCount;
-            _items = new List<Item>(pData.items);
+            foreach (var item in pData.items)
+            {
+                Console.WriteLine(item.name);
+            }
         }
     }
 }

@@ -38,7 +38,6 @@ namespace Hobgoblin.View
 
         public void OnNext(ShopData value)
         {
-            Console.WriteLine($"notification received in {this.GetType().ToString()}");
         }
 
         //------------------------------------------------------------------------------------------------------------------------
