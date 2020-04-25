@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Hobgoblin.Model
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,8 @@
         const int MaxMessageQueueCount = 4; //it caches the last four messages
         private List<string> messages = new List<string>();
 
-        private List<Item> itemList = new List<Item>(); //items in the store
-        private int selectedItemIndex = 0; //selected item index
+        private List<Item> itemList; //items in the store
+        private int _selectedItemIndex = 0; //selected item index
         private ShopData _shopData;
 
         private List<IObserver<ShopData>> _observers;
@@ -23,11 +23,14 @@
         //------------------------------------------------------------------------------------------------------------------------        
         public ShopModel(List<Item> pItems)
         {
+            _selectedItemIndex = 3;
+            Console.WriteLine("ctor");
             _observers = new List<IObserver<ShopData>>();
-            itemList = pItems;
+            itemList = new List<Item>(pItems);
             _shopData = new ShopData();
-            _shopData.selectedItemIndex = selectedItemIndex;
+            _shopData.selectedItemIndex = _selectedItemIndex;
             _shopData.itemCount = GetItemCount();
+            _shopData.items = pItems;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -36,9 +39,9 @@
         //returns the selected item
         public Item GetSelectedItem()
         {
-            if (selectedItemIndex >= 0 && selectedItemIndex < itemList.Count)
+            if (_selectedItemIndex >= 0 && _selectedItemIndex < itemList.Count)
             {
-                return itemList[selectedItemIndex];
+                return itemList[_selectedItemIndex];
             }
             else
             {
@@ -57,7 +60,7 @@
                 int index = itemList.IndexOf(item);
                 if (index >= 0)
                 {
-                    selectedItemIndex = index;
+                    _selectedItemIndex = index;
                 }
             }
         }
@@ -70,11 +73,11 @@
         {
             if (index >= 0 && index < itemList.Count)
             {
-                selectedItemIndex = index;
+                _selectedItemIndex = index;
 
-                _shopData.selectedItemIndex = selectedItemIndex;
+                _shopData.selectedItemIndex = _selectedItemIndex;
                 _shopData.itemCount = GetItemCount();
-                NotifyObservers(_shopData);
+                NotifyObservers();
 
             }
         }
@@ -85,7 +88,7 @@
         //returns the index of the current selected item
         public int GetSelectedItemIndex()
         {
-            return selectedItemIndex;
+            return _selectedItemIndex;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -180,11 +183,11 @@
             }
         }
 
-        private void NotifyObservers(ShopData pData)
+        private void NotifyObservers()
         {
             foreach (var observer in _observers)
             {
-                observer.OnNext(pData);
+                observer.OnNext(_shopData);
             }
         }
 
@@ -195,6 +198,8 @@
             {
                 _observers.Add(observer);
                 // Provide observer with existing data.
+                Console.WriteLine("provide data");
+
                 observer.OnNext(_shopData);
             }
             return new Unsubscriber<ShopData>(_observers, observer);

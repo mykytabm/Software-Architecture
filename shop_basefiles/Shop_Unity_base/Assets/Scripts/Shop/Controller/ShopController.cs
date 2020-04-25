@@ -1,4 +1,4 @@
-﻿namespace Controller
+﻿namespace Hobgoblin.Controller
 {
     using System;
     using Core;
@@ -34,6 +34,7 @@
         }
         public void SelectItem(int pIndex)
         {
+            Console.WriteLine($"new index to select: {pIndex}");
             shopModel.SelectItemByIndex(pIndex);
         }
 

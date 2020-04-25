@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Hobgoblin.Model
 {
     //This class holds data for an Item. Currently it has a name, an iconName and an amount.
     public class Item
