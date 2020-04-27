@@ -4,13 +4,13 @@ using Hobgoblin.View;
 
 namespace Hobgoblin.Utils
 {
-    internal class Unsubscriber<ShopModelInfo> : IDisposable
+    internal class Unsubscriber<Data> : IDisposable
     {
-        private List<IObserver<ShopModelInfo>> _observers;
-        private IObserver<ShopModelInfo> _observer;
+        private List<IObserver<Data>> _observers;
+        private IObserver<Data> _observer;
 
-        internal Unsubscriber(List<IObserver<ShopModelInfo>> observers,
-            IObserver<ShopModelInfo> observer)
+        internal Unsubscriber(List<IObserver<Data>> observers,
+            IObserver<Data> observer)
         {
             this._observers = observers;
             this._observer = observer;

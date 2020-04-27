@@ -8,27 +8,26 @@
 
     public class ShopModel : IObservable<ShopData>
     {
+        private List<IObserver<ShopData>> _observers;
+        private ShopData _data;
+
         const int MaxMessageQueueCount = 4; //it caches the last four messages
         private List<string> messages = new List<string>();
 
-        private List<Item> itemList; //items in the store
+        private List<Item> _items; //items in the store
         private int _selectedItemIndex = 0; //selected item index
-        private ShopData _shopData;
-
-        private List<IObserver<ShopData>> _observers;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopModel()
         //------------------------------------------------------------------------------------------------------------------------        
         public ShopModel(List<Item> pItems)
         {
-            _selectedItemIndex = 3;
+            _items = new List<Item>(pItems);
+
+            _data = new ShopData();
+            UpdateShopData();
+
             _observers = new List<IObserver<ShopData>>();
-            itemList = new List<Item>(pItems);
-            _shopData = new ShopData();
-            _shopData.selectedItemIndex = _selectedItemIndex;
-            _shopData.itemCount = GetItemCount();
-            _shopData.items = pItems;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -37,9 +36,9 @@
         //returns the selected item
         public Item GetSelectedItem()
         {
-            if (_selectedItemIndex >= 0 && _selectedItemIndex < itemList.Count)
+            if (_selectedItemIndex >= 0 && _selectedItemIndex < _items.Count)
             {
-                return itemList[_selectedItemIndex];
+                return _items[_selectedItemIndex];
             }
             else
             {
@@ -55,7 +54,7 @@
         {
             if (item != null)
             {
-                int index = itemList.IndexOf(item);
+                int index = _items.IndexOf(item);
                 if (index >= 0)
                 {
                     _selectedItemIndex = index;
@@ -71,7 +70,7 @@
         //attempts to select the item, specified by 'index', fails silently
         public void SelectItemByIndex(int index)
         {
-            if (index >= 0 && index < itemList.Count)
+            if (index >= 0 && index < _items.Count)
             {
                 _selectedItemIndex = index;
                 UpdateShopData();
@@ -91,19 +90,10 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItems()
         //------------------------------------------------------------------------------------------------------------------------        
-        //returns a list with all current items in the shop.
+        //returns a deepcopied list with all current items in the shop.
         public List<Item> GetItems()
         {
-            return DeepCopyItems();
-        }
-        private List<Item> DeepCopyItems()
-        {
-            var deepCopyList = new List<Item>();
-            foreach (var item in itemList)
-            {
-                deepCopyList.Add((Item)item.Clone());
-            }
-            return deepCopyList;
+            return HUtils.DeepCopyList(_items);
         }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItemCount()
@@ -111,7 +101,7 @@
         //returns the number of items
         private int GetItemCount()
         {
-            return itemList.Count;
+            return _items.Count;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -120,9 +110,9 @@
         //tries to get an item, specified by index. returns null if unsuccessful
         public Item GetItemByIndex(int index)
         {
-            if (index >= 0 && index < itemList.Count)
+            if (index >= 0 && index < _items.Count)
             {
-                return itemList[index];
+                return _items[index];
             }
             else
             {
@@ -169,8 +159,8 @@
             if (selectedItem.Amount <= 0)
             {
                 Console.WriteLine("removing item");
-                itemList.Remove(selectedItem);
-                _selectedItemIndex = (int)Mathf.Clamp(_selectedItemIndex, 0, itemList.Count - 1);
+                _items.Remove(selectedItem);
+                _selectedItemIndex = (int)Mathf.Clamp(_selectedItemIndex, 0, _items.Count - 1);
             }
             UpdateShopData();
             NotifyObservers();
@@ -195,16 +185,16 @@
 
         private void UpdateShopData()
         {
-            _shopData.items = itemList;
-            _shopData.itemCount = itemList.Count;
-            _shopData.selectedItemIndex = _selectedItemIndex;
+            _data.items = _items;
+            _data.itemCount = _items.Count;
+            _data.selectedItemIndex = _selectedItemIndex;
         }
 
         private void NotifyObservers()
         {
             foreach (var observer in _observers)
             {
-                observer.OnNext(_shopData);
+                observer.OnNext(_data);
             }
         }
 
@@ -215,7 +205,7 @@
             {
                 _observers.Add(observer);
                 // Provide observer with existing data.
-                observer.OnNext(_shopData);
+                observer.OnNext(_data);
             }
             return new Unsubscriber<ShopData>(_observers, observer);
         }

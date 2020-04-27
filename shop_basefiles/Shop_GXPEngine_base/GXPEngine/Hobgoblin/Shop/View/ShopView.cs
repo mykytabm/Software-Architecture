@@ -7,10 +7,10 @@
     using GXPEngine.Core;
     using Hobgoblin.Model;
     using Hobgoblin.Controller;
-    using Hobgoblin.Utils;
     using Hobgoblin.Core;
     using Hobgoblin.ShopCommands;
     using Hobgoblin.Interfaces;
+    using Hobgoblin.Utils;
 
     //This Class draws the icons for the items in the store
     public class ShopView : Canvas, IObserver<ShopData>
@@ -27,7 +27,8 @@
         private List<Item> _items;
         private List<KeyCommand> _keyCommands;
         //the icon cache is built in here, that violates the S.R. principle.
-        private Dictionary<string, Texture2D> iconCache;
+        private Dictionary<string, Texture2D> _iconCache;
+        private Texture2D _selectionIcon;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopView()
@@ -36,8 +37,9 @@
         {
             _shopController = pShopController;
             _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
-            iconCache = new Dictionary<string, Texture2D>();
+            _iconCache = new Dictionary<string, Texture2D>();
             _items = new List<Item>();
+            _selectionIcon = new Texture2D("media/frame.png");
 
 
             x = (game.width - width) / 2;
@@ -144,7 +146,8 @@
                 int iconY = GetRowByIndex(i) * Spacing + Margin;
                 if (i == _selectedItemId)
                 {
-                    DrawSelectedItem(item, iconX, iconY);
+                    DrawItem(item, iconX, iconY);
+                    drawSelectionIcon(iconX, iconY);
                 }
                 else
                 {
@@ -152,6 +155,10 @@
                         DrawItem(item, iconX, iconY);
                 }
             }
+        }
+        private void drawSelectionIcon(int iconX, int iconY)
+        {
+            graphics.DrawImage(_selectionIcon.bitmap, iconX, iconY);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -170,7 +177,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawSelectedItem(Item item, int iconX, int iconY)
         {
-            if (GXPEngine.Utils.Random(0, 2) == 0)
+            if (Utils.Random(0, 2) == 0)
             {
                 DrawItem(item, iconX, iconY);
             }
@@ -181,11 +188,11 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private Texture2D GetCachedTexture(string filename)
         {
-            if (!iconCache.ContainsKey(filename))
+            if (!_iconCache.ContainsKey(filename))
             {
-                iconCache.Add(filename, new Texture2D("media/" + filename + ".png"));
+                _iconCache.Add(filename, new Texture2D("media/" + filename + ".png"));
             }
-            return iconCache[filename];
+            return _iconCache[filename];
         }
 
         public void Subscribe(ShopModel pProvider)
