@@ -149,13 +149,13 @@
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
         //not implemented yet TODO
-        public bool Buy()
+        public Item Buy()
         {
             Item selectedItem = GetSelectedItem();
             if (selectedItem == null)
             {
                 AddMessage(" You can't buy this item! Come back with more gold or give me your laptop!");
-                return false;
+                return null;
             }
             selectedItem.Amount--;
             AddMessage($" Whispering something rude in orc, Hobgoblin (shopKeeper) sells you {selectedItem.name} for {selectedItem.price} gold.");
@@ -168,8 +168,10 @@
             }
             UpdateShopData();
             NotifyObservers();
+            var item = (Item)selectedItem.Clone();
+            item.Amount = 1;
 
-            return true;
+            return item;
         }
 
 

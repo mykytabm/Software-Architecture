@@ -133,7 +133,7 @@ namespace Hobgoblin
 
         private void OpenShop()
         {
-            _shopBrowseState = new ShopBrowseState(_shopItems);
+            _shopBrowseState = new ShopBrowseState(_shopItems, _player);
             AddChild(_shopBrowseState);
             _updateAction += _shopBrowseState.Step;
         }

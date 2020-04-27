@@ -22,6 +22,8 @@
 
         private int _selectedItemId;
         private int _itemCount;
+
+        private Actor _customer;
         private ShopController _shopController;
         private CommandManager _commandManager;
 
@@ -34,14 +36,14 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopView()
         //------------------------------------------------------------------------------------------------------------------------        
-        public ShopView(ShopController pShopController) : base(340, 340)
+        public ShopView(ShopController pShopController, Actor pCustomer) : base(340, 340)
         {
             _shopController = pShopController;
             _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
             _iconCache = new Dictionary<string, Texture2D>();
             _items = new List<Item>();
             _selectionIcon = new Texture2D("media/frame.png");
-
+            _customer = pCustomer;
 
             x = (game.width - width) / 2;
             y = (game.height - height) / 2;
@@ -51,7 +53,7 @@
             var moveSelectionRight = new MoveSelectionCommand(_shopController, this, 1, 0);
             var moveSelectionUp = new MoveSelectionCommand(_shopController, this, 0, -1);
             var moveSelectionDown = new MoveSelectionCommand(_shopController, this, 0, 1);
-            var buyItem = new BuyItemCommand(_shopController);
+            var buyItem = new BuyItemCommand(_shopController, _customer);
             var sellItem = new SellItemCommand(_shopController);
 
             //-------------------------- Add Commands to list ------------------------------//

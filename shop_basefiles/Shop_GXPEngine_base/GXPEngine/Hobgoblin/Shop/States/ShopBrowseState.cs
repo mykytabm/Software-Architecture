@@ -18,7 +18,7 @@ namespace Hobgoblin.States
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopBrowseState()
         //------------------------------------------------------------------------------------------------------------------------
-        public ShopBrowseState(List<Item> items)
+        public ShopBrowseState(List<Item> items, Actor pCustumer)
         {
             //create shop
             ShopModel shop = new ShopModel(items);
@@ -28,7 +28,7 @@ namespace Hobgoblin.States
 
 
             //create shop view
-            _shopView = new ShopView(_shopController);
+            _shopView = new ShopView(_shopController, pCustumer);
             _shopView.Subscribe(shop);
             AddChild(_shopView);
             Helper.AlignToCenter(_shopView, true, true);

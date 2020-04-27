@@ -25,7 +25,10 @@ namespace Hobgoblin.Components
             _items.Capacity = _items.Count + pSlots;
             _gold = pGold;
         }
-
+        public void AddGold(int pGold)
+        {
+            _gold += pGold;
+        }
         public void AddItem(Item pItem)
         {
             _items.Add(pItem);
