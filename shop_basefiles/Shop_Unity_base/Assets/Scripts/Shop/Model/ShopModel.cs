@@ -21,12 +21,16 @@
         //------------------------------------------------------------------------------------------------------------------------        
         public ShopModel(List<Item> pItems)
         {
-            _items = new List<Item>(pItems);
+            _observers = new List<IObserver<ShopData>>();
+
+            _items = pItems;
 
             _data = new ShopData();
+            AddMessage(" You enter the shop. You see hobgoblin behind the wooden counter.");
+            AddMessage(" He looks and you and shows you his scary teeth. You guess this is how he is smiling.");
+
             UpdateShopData();
 
-            _observers = new List<IObserver<ShopData>>();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +154,7 @@
             Item selectedItem = GetSelectedItem();
             if (selectedItem == null)
             {
-                AddMessage("You can't buy this item! Come back with more gold or give me your laptop!");
+                AddMessage(" You can't buy this item! Come back with more gold or give me your laptop!");
                 return false;
             }
             selectedItem.Amount--;

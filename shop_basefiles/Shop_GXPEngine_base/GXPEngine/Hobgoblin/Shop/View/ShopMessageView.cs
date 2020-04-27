@@ -53,11 +53,9 @@ namespace Hobgoblin.View
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  DrawBackground()
         //------------------------------------------------------------------------------------------------------------------------
-        //Draw background color
         private void DrawBackground()
         {
-            graphics.Clear(Color.IndianRed);
-            //graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, game.width, FontHeight));
+            graphics.Clear(Color.DarkOliveGreen);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -66,12 +64,12 @@ namespace Hobgoblin.View
         //Draw messages onto this messagebox
         private void DrawMessages()
         {
-            graphics.DrawString("Use ARROWKEYS to navigate. Press SPACE to buy, BKSPACE to sell.", SystemFonts.CaptionFont, Brushes.White, 0, 0);
+            graphics.DrawString("Use ARROW KEYS to navigate. Press SPACE to buy, BKSPACE to sell.", SystemFonts.CaptionFont, Brushes.White, 0, 0);
 
             for (int i = 0; i < _messages.Count; ++i)
             {
                 String message = _messages[i];
-                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.Black, 0, FontHeight + i * FontHeight);
+                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.White, 0, FontHeight + i * FontHeight);
             }
         }
 

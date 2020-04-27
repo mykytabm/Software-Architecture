@@ -10,12 +10,10 @@ namespace Hobgoblin.States
 
     public class ShopBrowseState : HGameObject
     {
-        
         private ShopController _shopController;
         private ShopView _shopView;
         private ShopMessageView _shopMessageView;
-        private ItemInfoView _itemIfoView;
-        //public ShopCommandManager _shopCommandManager;
+        private ItemInfoView _itemInfoView;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopBrowseState()
@@ -28,8 +26,6 @@ namespace Hobgoblin.States
             //create controller
             _shopController = new ShopController(shop);
 
-            //_shopCommandManager = new ShopCommandManager(_shopController);
-
 
             //create shop view
             _shopView = new ShopView(_shopController);
@@ -38,19 +34,17 @@ namespace Hobgoblin.States
             Helper.AlignToCenter(_shopView, true, true);
 
             //create item info view
-            _itemIfoView = new ItemInfoView();
-            _itemIfoView.Subscribe(shop);
-            AddChild(_itemIfoView);
-            
+            _itemInfoView = new ItemInfoView();
+            _itemInfoView.Subscribe(shop);
+            AddChild(_itemInfoView);
+
 
             //create message view
             _shopMessageView = new ShopMessageView();
             _shopMessageView.Subscribe(shop);
             AddChild(_shopMessageView);
             Helper.AlignToCenter(_shopMessageView, true, false);
-
         }
-
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Step()
         //------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +53,7 @@ namespace Hobgoblin.States
         {
             _shopView.Step();
             _shopMessageView.Step();
-            _itemIfoView.Step();
+            _itemInfoView.Step();
         }
 
     }

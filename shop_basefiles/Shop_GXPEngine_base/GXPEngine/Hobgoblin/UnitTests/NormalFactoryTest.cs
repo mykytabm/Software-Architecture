@@ -1,8 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 using Hobgoblin.Core;
-using Hobgoblin.Items;
 using Hobgoblin.Enums;
+using Hobgoblin.Model;
+
 namespace Hobgoblin.UnitTests
 {
     [TestFixture]
@@ -20,10 +21,9 @@ namespace Hobgoblin.UnitTests
         public void CreatePotion()
         {
             int numOfPotions = Globals.random.Next(0, Globals.potionMaxAmount);
-            Potion potion = _factory.CreatePotion(numOfPotions);
+            Item potion = _factory.CreatePotion(numOfPotions);
 
             Assert.AreNotEqual("", potion.name);
-            Assert.AreNotEqual(EPotion.none, potion.type);
             Assert.AreNotEqual(0, potion.Amount);
             Assert.AreNotEqual(0, potion.iconName);
         }
@@ -32,10 +32,9 @@ namespace Hobgoblin.UnitTests
         public void CreateWeapon()
         {
             int numOfWeapons = Globals.random.Next(0, Globals.weaponMaxAmount);
-            Weapon weapon = _factory.CreateWeapon(numOfWeapons);
+            Item weapon = _factory.CreateWeapon(numOfWeapons);
 
             Assert.AreNotEqual("", weapon.name);
-            Assert.AreNotEqual(EPotion.none, weapon.type);
             Assert.AreNotEqual(0, weapon.Amount);
             Assert.AreNotEqual(0, weapon.iconName);
         }

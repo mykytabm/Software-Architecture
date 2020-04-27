@@ -9,6 +9,7 @@ namespace Hobgoblin.Enums
         Legs,
         LeftHand,
         RightHand,
+        Hand,
         BeltPocket
     }
 }

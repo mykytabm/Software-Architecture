@@ -15,11 +15,13 @@ namespace Hobgoblin.Model
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Item()
         //------------------------------------------------------------------------------------------------------------------------
-        public Item(string name, string iconName, int amount)
+
+        public Item(string name, string iconName, int amount, ERarity pRarity = ERarity.Common)
         {
             this.name = name;
             this.iconName = iconName;
             this.Amount = amount;
+            rarity = pRarity;
         }
 
         public virtual IPrototype Clone()

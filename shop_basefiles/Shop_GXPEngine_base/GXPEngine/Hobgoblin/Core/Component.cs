@@ -4,8 +4,7 @@ namespace Hobgoblin.Core
     public abstract class Component
     {
         protected HGameObject _owner = null;
-        public Component() {}
-
+        public HGameObject Owner { get { return _owner; } }
         public void SetOwner(HGameObject pOwner)
         {
             _owner = pOwner;

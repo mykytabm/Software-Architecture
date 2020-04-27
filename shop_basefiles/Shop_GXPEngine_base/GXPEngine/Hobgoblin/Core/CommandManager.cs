@@ -7,50 +7,61 @@ namespace Hobgoblin.Core
 {
     public class CommandManager : IService
     {
-        private Dictionary<Key, List<ICommand>> _keyCommands = new Dictionary<Key, List<ICommand>>();
+        private List<KeyCommand> _keyCommands = new List<KeyCommand>();
 
         public void RegisterCommand(Key pKey, ICommand pCommand)
         {
-            if (_keyCommands.ContainsKey(pKey))
-            {
-                if (!ContainsCommand(pKey, pCommand) && _keyCommands[pKey].Count <= Globals.maxCommandsPerKey)
-                {
-                    _keyCommands[pKey].Add(pCommand);
-                }
-            }
-            else
-            {
-                _keyCommands.Add(pKey, new List<ICommand>(Globals.maxCommandsPerKey) { pCommand });
-            }
+            //if (_keyCommands.ContainsKey(pKey))
+            //{
+            //    if (!ContainsCommand(pKey, pCommand) && _keyCommands[pKey].Count <= Globals.maxCommandsPerKey)
+            //    {
+            //        _keyCommands[pKey].Add(pCommand);
+            //    }
+            //}
+            //else
+            //{
+            //    _keyCommands.Add(pKey, new List<ICommand>(Globals.maxCommandsPerKey) { pCommand });
+            //}
         }
+        public void RegisterCommand(KeyCommand pCommand)
+        {
+            _keyCommands.Add(pCommand);
+        }
+
         public bool DeregisterCommand(Key pKey, ICommand pCommand)
         {
-            if (_keyCommands.ContainsKey(pKey))
-            {
-                return _keyCommands[pKey].Remove(pCommand);
-            }
-            else
-            {
-                return false;
-            }
+            //if (_keyCommands.ContainsKey(pKey))
+            //{
+            //    return _keyCommands[pKey].Remove(pCommand);
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            return false;
+        }
+        public bool DeregisterCommand(KeyCommand pCommand)
+        {
+            return _keyCommands.Remove(pCommand);
         }
 
 
-        public bool ContainsCommand(Key pKey, ICommand pCommand)
+        //public bool ContainsCommand(Key pKey, ICommand pCommand)
+        //{
+        //    //return _keyCommands[pKey].Contains(pCommand);
+        //}
+        public bool ContainsCommand(KeyCommand pCommand)
         {
-            return _keyCommands[pKey].Contains(pCommand);
+            return _keyCommands.Contains(pCommand);
         }
 
         public void Step()
         {
-            foreach (var keyEvent in _keyCommands)
+            for (int i = _keyCommands.Count - 1; i >= 0; i--)
             {
-                if (Input.GetKeyDown((int)keyEvent.Key))
+                if (Input.GetKeyDown((int)_keyCommands[i].key))
                 {
-                    foreach (var command in keyEvent.Value)
-                    {
-                        command.Execute();
-                    }
+                    _keyCommands[i].command.Execute();
                 }
             }
         }

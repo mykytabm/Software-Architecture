@@ -41,16 +41,16 @@ namespace Hobgoblin.View
         //------------------------------------------------------------------------------------------------------------------------
         private void DrawBackground()
         {
-            graphics.Clear(Color.BurlyWood);
+            graphics.Clear(Color.DarkOliveGreen);
         }
 
         private void DrawItemInfo()
         {
             if (_item == null) return;
             graphics.DrawImage(_itemTexture.bitmap, _itemIconX, _itemIconY, _iconSize, _iconSize);
-            graphics.DrawString($"{_item.name}", SystemFonts.CaptionFont, Brushes.Black, _offset, 120);
-            graphics.DrawString($"Amount: {_item.Amount}", SystemFonts.CaptionFont, Brushes.Black, _offset, 140);
-            graphics.DrawString($"price:{_item.price} gold", SystemFonts.CaptionFont, Brushes.Black, _offset, 260);
+            graphics.DrawString($"{_item.name}", SystemFonts.CaptionFont, Brushes.White, _offset, 120);
+            graphics.DrawString($"Amount: {_item.Amount}", SystemFonts.CaptionFont, Brushes.White, _offset, 140);
+            graphics.DrawString($"price:{_item.price} gold", SystemFonts.CaptionFont, Brushes.White, _offset, 260);
         }
 
         public void Subscribe(ShopModel pProvider)

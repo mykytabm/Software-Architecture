@@ -16,7 +16,7 @@
     public class ShopView : Canvas, IObserver<ShopData>
     {
         const int Columns = 4;
-        const int Spacing = 80;
+        const int Spacing = IconSize + 15;
         const int Margin = 18;
         const int IconSize = 64;
 
@@ -54,7 +54,7 @@
             var buyItem = new BuyItemCommand(_shopController);
             var sellItem = new SellItemCommand(_shopController);
 
-            //----------------------------- Store Commands ---------------------------------//
+            //-------------------------- Add Commands to list ------------------------------//
             _keyCommands = new List<KeyCommand>()
             {
                 new KeyCommand(Key.LEFT, moveSelectionLeft),
@@ -65,13 +65,9 @@
                 new KeyCommand(Key.SPACE, sellItem)
             };
 
-            //----------------------------- Register Commands -------------------------------//
-            foreach (var keyCommand in _keyCommands)
-            {
-                _commandManager.RegisterCommand(keyCommand.key, keyCommand.command);
-            }
-        }
+            RegisterCommands();
 
+        }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Step()
         //------------------------------------------------------------------------------------------------------------------------        
@@ -79,6 +75,30 @@
         {
             DrawBackground();
             DrawItems();
+        }
+
+
+        public void Subscribe(ShopModel pProvider)
+        {
+            pProvider.Subscribe(this);
+        }
+
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception pError)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(ShopData pData)
+        {
+            _items = pData.items;
+            _selectedItemId = pData.selectedItemIndex;
+            _itemCount = pData.itemCount;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +121,33 @@
                 return _selectedItemId;
             }
             return _selectedItemId;
+        }
+
+        protected override void OnDestroy()
+        {
+            DeregisterCommands();
+            base.OnDestroy();
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  RegisterCommands()
+        //------------------------------------------------------------------------------------------------------------------------        
+        private void RegisterCommands()
+        {
+            foreach (var keyCommand in _keyCommands)
+            {
+                _commandManager.RegisterCommand(keyCommand);
+            }
+        }
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  DeregisterCommands()
+        //------------------------------------------------------------------------------------------------------------------------        
+        public void DeregisterCommands()
+        {
+            foreach (var keyCommand in _keyCommands)
+            {
+                _commandManager.DeregisterCommand(keyCommand);
+            }
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -132,7 +179,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawBackground()
         {
-            graphics.Clear(Color.White);
+            graphics.Clear(Color.DarkOliveGreen);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -157,6 +204,9 @@
                 }
             }
         }
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  DrawSelectionIcon()
+        //------------------------------------------------------------------------------------------------------------------------        
         private void DrawSelectionIcon(int iconX, int iconY)
         {
             graphics.DrawImage(_selectionIcon.bitmap, iconX, iconY);
@@ -183,26 +233,5 @@
             return _iconCache[filename];
         }
 
-        public void Subscribe(ShopModel pProvider)
-        {
-            pProvider.Subscribe(this);
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnError(Exception pError)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNext(ShopData pData)
-        {
-            _items = pData.items;
-            _selectedItemId = pData.selectedItemIndex;
-            _itemCount = pData.itemCount;
-        }
     }
 }

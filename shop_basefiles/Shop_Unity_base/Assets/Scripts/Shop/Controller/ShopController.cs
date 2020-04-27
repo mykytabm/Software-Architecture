@@ -32,7 +32,6 @@
         }
         public void SelectItem(int pIndex)
         {
-            Console.WriteLine($"new index to select: {pIndex}");
             _shopModel.SelectItemByIndex(pIndex);
         }
 

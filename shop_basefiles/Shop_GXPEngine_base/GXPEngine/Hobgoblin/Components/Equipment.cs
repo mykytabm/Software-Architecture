@@ -20,14 +20,31 @@ namespace Hobgoblin.Components
                     new EquipmentSlot(EItemSlot.RightHand),
                     new EquipmentSlot(EItemSlot.LeftHand)
                 };
+
             _belt = new List<EquipmentSlot>(pBeltSlots);
-            Console.WriteLine(_belt.Capacity);
             for (int i = 0; i < _belt.Capacity; i++)
             {
                 _belt.Add(new EquipmentSlot(EItemSlot.BeltPocket));
             }
-            Console.WriteLine(_belt.Count);
-            Console.WriteLine(_belt.Capacity);
+        }
+        public bool Equip(Item pItem)
+        {
+            var equipable = pItem.GetComponent<Equipable>();
+            if (equipable != null)
+            {
+                var inventory = _owner.GetComponent<Inventory>();
+                foreach (var equipmentSlot in _body)
+                {
+                    if (equipmentSlot.slot == equipable.slot)
+                    {
+                        inventory.AddItem(equipmentSlot.item);
+                        equipmentSlot.item = pItem;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
         }
     }
 }

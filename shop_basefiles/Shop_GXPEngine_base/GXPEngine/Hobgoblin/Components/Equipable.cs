@@ -19,14 +19,5 @@ namespace Hobgoblin.Components
             slot = pSlot;
             _durability = pDurability;
         }
-        public bool Equip(Actor pActor)
-        {
-            return true;
-        }
-
-        public void Repair()
-        {
-            _durability = (int)Mathf.Clamp(_durability + 30, 0, 100);
-        }
     }
 }

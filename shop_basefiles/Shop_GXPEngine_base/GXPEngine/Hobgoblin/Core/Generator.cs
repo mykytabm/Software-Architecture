@@ -1,6 +1,5 @@
 ﻿using System;
 using Hobgoblin.Interfaces;
-using Hobgoblin.Items;
 using Hobgoblin.Enums;
 using Hobgoblin.Model;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Hobgoblin.Model;
-namespace Hobgoblin.Inventory
+namespace Hobgoblin.InventoryMvc
 {
     public class InventoryData
     {
