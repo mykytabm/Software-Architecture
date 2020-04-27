@@ -7,13 +7,17 @@ namespace Hobgoblin.Utils
     public class ShopData
     {
         public List<Item> items;
-        public int selectedItemIndex;
+        public List<string> messages;
         public int itemCount;
+        public Item selectedItem;
+        public int selectedItemIndex;
         public ShopData()
         {
             items = new List<Item>();
-            selectedItemIndex = 0;
+            messages = new List<string>();
             itemCount = 0;
+            selectedItem = null;
+            selectedItemIndex = 0;
         }
     }
 }

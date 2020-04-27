@@ -3,7 +3,7 @@
     public enum EWeapon
     {
         none,
-        Sabre,
+        Rapier,
         Dagger
     }
 }

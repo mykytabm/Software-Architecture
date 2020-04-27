@@ -18,6 +18,7 @@
         const int Columns = 4;
         const int Spacing = 80;
         const int Margin = 18;
+        const int IconSize = 64;
 
         private int _selectedItemId;
         private int _itemCount;
@@ -147,7 +148,7 @@
                 if (i == _selectedItemId)
                 {
                     DrawItem(item, iconX, iconY);
-                    drawSelectionIcon(iconX, iconY);
+                    DrawSelectionIcon(iconX, iconY);
                 }
                 else
                 {
@@ -156,7 +157,7 @@
                 }
             }
         }
-        private void drawSelectionIcon(int iconX, int iconY)
+        private void DrawSelectionIcon(int iconX, int iconY)
         {
             graphics.DrawImage(_selectionIcon.bitmap, iconX, iconY);
         }
@@ -167,20 +168,7 @@
         private void DrawItem(Item item, int iconX, int iconY)
         {
             Texture2D iconTexture = GetCachedTexture(item.iconName);
-            graphics.DrawImage(iconTexture.bitmap, iconX, iconY);
-            graphics.DrawString(item.name, SystemFonts.CaptionFont, Brushes.Black, iconX + 16, iconY + 16);
-            graphics.DrawString(item.Amount.ToString(), SystemFonts.CaptionFont, Brushes.Black, iconX + 16, iconY + 32);
-        }
-
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  DrawSelectedItem()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private void DrawSelectedItem(Item item, int iconX, int iconY)
-        {
-            if (Utils.Random(0, 2) == 0)
-            {
-                DrawItem(item, iconX, iconY);
-            }
+            graphics.DrawImage(iconTexture.bitmap, iconX, iconY, IconSize, IconSize);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

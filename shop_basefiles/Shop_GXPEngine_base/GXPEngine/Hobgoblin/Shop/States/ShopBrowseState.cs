@@ -10,9 +10,11 @@ namespace Hobgoblin.States
 
     public class ShopBrowseState : HGameObject
     {
+        
         private ShopController _shopController;
         private ShopView _shopView;
         private ShopMessageView _shopMessageView;
+        private ItemInfoView _itemIfoView;
         //public ShopCommandManager _shopCommandManager;
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -35,9 +37,14 @@ namespace Hobgoblin.States
             AddChild(_shopView);
             Helper.AlignToCenter(_shopView, true, true);
 
+            //create item info view
+            _itemIfoView = new ItemInfoView();
+            _itemIfoView.Subscribe(shop);
+            AddChild(_itemIfoView);
+            
 
             //create message view
-            _shopMessageView = new ShopMessageView(shop);
+            _shopMessageView = new ShopMessageView();
             _shopMessageView.Subscribe(shop);
             AddChild(_shopMessageView);
             Helper.AlignToCenter(_shopMessageView, true, false);
@@ -52,6 +59,7 @@ namespace Hobgoblin.States
         {
             _shopView.Step();
             _shopMessageView.Step();
+            _itemIfoView.Step();
         }
 
     }

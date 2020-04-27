@@ -19,7 +19,7 @@ namespace Hobgoblin.Core
         {
             var amount = Globals.random.Next(1, pMaxAmount + 1); // Random.Next(inclusive min, exclusive max)
             var type = HUtils.RandomEnumValue<EWeapon>(Globals.random);
-            return new Weapon($"{type}", "item", amount, type);
+            return new Weapon($"{type}", "dagger", amount, type);
         }
     }
 }

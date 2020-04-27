@@ -9,6 +9,7 @@ namespace Hobgoblin.Model
     {
         public readonly ERarity rarity;
         public readonly string iconName;
+        public readonly int price = 20;
         public int Amount { get; set; }
 
         //------------------------------------------------------------------------------------------------------------------------

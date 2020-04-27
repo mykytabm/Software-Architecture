@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using GXPEngine;
 using Hobgoblin.Model;
@@ -10,15 +11,14 @@ namespace Hobgoblin.View
     public class ShopMessageView : Canvas, IObserver<ShopData>
     {
         const int FontHeight = 20;
-
-        private ShopModel shop;
+        private List<string> _messages;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopMessageDisplay()
         //------------------------------------------------------------------------------------------------------------------------
-        public ShopMessageView(ShopModel shop) : base(800, 100)
+        public ShopMessageView() : base(800, 100)
         {
-            this.shop = shop;
+            _messages = new List<string>();
         }
 
         public void Subscribe(ShopModel pProvider)
@@ -36,8 +36,9 @@ namespace Hobgoblin.View
             throw new NotImplementedException();
         }
 
-        public void OnNext(ShopData value)
+        public void OnNext(ShopData pData)
         {
+            _messages = pData.messages;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -55,8 +56,8 @@ namespace Hobgoblin.View
         //Draw background color
         private void DrawBackground()
         {
-            graphics.Clear(Color.White);
-            graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, game.width, FontHeight));
+            graphics.Clear(Color.IndianRed);
+            //graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, game.width, FontHeight));
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -67,11 +68,10 @@ namespace Hobgoblin.View
         {
             graphics.DrawString("Use ARROWKEYS to navigate. Press SPACE to buy, BKSPACE to sell.", SystemFonts.CaptionFont, Brushes.White, 0, 0);
 
-            string[] messages = shop.GetMessages();
-            for (int index = 0; index < messages.Length; index++)
+            for (int i = 0; i < _messages.Count; ++i)
             {
-                String message = messages[index];
-                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.Black, 0, FontHeight + index * FontHeight);
+                String message = _messages[i];
+                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.Black, 0, FontHeight + i * FontHeight);
             }
         }
 
