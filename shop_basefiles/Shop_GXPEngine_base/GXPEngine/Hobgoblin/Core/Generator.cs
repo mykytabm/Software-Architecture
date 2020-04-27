@@ -9,10 +9,10 @@ namespace Hobgoblin.Core
 {
     public class Generator
     {
-        private ItemFactory _factory;
-        
+        private IItemFactory _factory;
 
-        public Generator(ItemFactory pFactory)
+
+        public Generator(IItemFactory pFactory)
         {
             _factory = pFactory;
 
@@ -21,7 +21,7 @@ namespace Hobgoblin.Core
         public List<Item> CreateRandomItems(int pNum)
         {
             var items = new List<Item>(pNum);
-            for (int i = 0; i < pNum; i++)
+            for (int i = 0; i < pNum; ++i)
             {
                 items.Add(CreateRandomItem());
             }

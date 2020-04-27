@@ -2,6 +2,7 @@
 using Hobgoblin.Core;
 using Hobgoblin.Enums;
 using Hobgoblin.Model;
+using Hobgoblin.Interfaces;
 namespace Hobgoblin.Items
 {
     public class Weapon : Item
@@ -11,6 +12,10 @@ namespace Hobgoblin.Items
             base(name, iconName, amount)
         {
             type = pType;
+        }
+        public override IPrototype Clone()
+        {
+            return new Weapon(name, iconName, Amount, type);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Hobgoblin.Utils
             var v = Enum.GetValues(typeof(T));
             return (T)v.GetValue(pRandom.Next(1, v.Length));
         }
-        public static bool TindObjectInArray<T>(T pObj, T[] pArr) where T : class
+        public static bool FindObjectInArray<T>(T pObj, T[] pArr) where T : class
         {
             foreach (var obj in pArr)
             {

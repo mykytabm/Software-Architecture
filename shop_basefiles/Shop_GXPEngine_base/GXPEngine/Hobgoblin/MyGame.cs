@@ -1,6 +1,7 @@
 using GXPEngine;
 using Hobgoblin.States;
 using Hobgoblin.Core;
+using Hobgoblin.Components;
 using Hobgoblin.Model;
 using Hobgoblin.Interfaces;
 using System.Collections.Generic;
@@ -10,13 +11,12 @@ namespace Hobgoblin
 {
     public class MyGame : Game
     {
-
         private ShopBrowseState _shopBrowseState;
         private CommandManager _commandManager;
-        private Player _player;
+        private Actor _player;
 
         public Generator generator;
-        public static Player Player;
+        public static Actor Player;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  MyGame()
@@ -44,7 +44,6 @@ namespace Hobgoblin
         private void RegisterServices()
         {
             ServiceLocator.Instance.AddService(_commandManager);
-
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -53,8 +52,8 @@ namespace Hobgoblin
         private void CreateObjects()
         {
 
-
-            _player = new Player();
+            _player = new Humanoid();
+            _player.AddComponent(new Equipment(5));
             Player = _player;
             generator = new Generator(new NormalItemFactory());
             var shopItemList = generator.CreateRandomItems(10);

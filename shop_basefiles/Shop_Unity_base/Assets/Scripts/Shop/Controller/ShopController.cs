@@ -2,14 +2,12 @@
 {
     using System;
     using Core;
-    using Model;
+    using Hobgoblin.Model;
 
-    //This class provides a controller for a ShopModel. The Controller acts as a public interface for a ShopModel.
-    //These methods are being called by ShopView, as it implements the user interface. The exception is Initialize(),
-    //it is being called by ShopState. We use Initialize() as a replacement for the constructor, as this class is a MonoBehaviour.
+
     public class ShopController
     {
-        private ShopModel shopModel;
+        private ShopModel _shopModel;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Initialize()
@@ -17,7 +15,7 @@
         //Ties this controller to a model
         public ShopController(ShopModel shopModel)
         {
-            this.shopModel = shopModel;
+            this._shopModel = shopModel;
             Browse();
         }
 
@@ -29,13 +27,13 @@
         {
             if (pItem != null)
             {
-                shopModel.SelectItem(pItem);
+                _shopModel.SelectItem(pItem);
             }
         }
         public void SelectItem(int pIndex)
         {
             Console.WriteLine($"new index to select: {pIndex}");
-            shopModel.SelectItemByIndex(pIndex);
+            _shopModel.SelectItemByIndex(pIndex);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +41,7 @@
         //------------------------------------------------------------------------------------------------------------------------
         public void Browse()
         {
-            shopModel.SelectItemByIndex(0); //right now all this function does is select the first item in shopModel.
+            _shopModel.SelectItemByIndex(0);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -51,7 +49,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         public void Buy()
         {
-            shopModel.Buy();
+            _shopModel.Buy();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +57,7 @@
         //------------------------------------------------------------------------------------------------------------------------        
         public void Sell()
         {
-            shopModel.Sell();
+            _shopModel.Sell();
         }
     }
 }

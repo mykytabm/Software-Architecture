@@ -3,11 +3,9 @@
     using System;
     using System.Collections.Generic;
     using GXPEngine;
-    using Utils;
-    using View;
+    using Hobgoblin.Utils;
+    using Hobgoblin.View;
 
-    //This class holds the model of our Shop. It contains an ItemList. In its current setup, view and controller need to get
-    //data via polling. Advisable is, to set up an event system for better integration with View and Controller.
     public class ShopModel : IObservable<ShopData>
     {
         const int MaxMessageQueueCount = 4; //it caches the last four messages
@@ -25,7 +23,6 @@
         public ShopModel(List<Item> pItems)
         {
             _selectedItemIndex = 3;
-            Console.WriteLine("ctor");
             _observers = new List<IObserver<ShopData>>();
             itemList = new List<Item>(pItems);
             _shopData = new ShopData();
@@ -62,7 +59,6 @@
                 if (index >= 0)
                 {
                     _selectedItemIndex = index;
-
                     UpdateShopData();
                     NotifyObservers();
                 }
@@ -78,10 +74,8 @@
             if (index >= 0 && index < itemList.Count)
             {
                 _selectedItemIndex = index;
-
                 UpdateShopData();
                 NotifyObservers();
-
             }
         }
 
@@ -99,13 +93,18 @@
         //------------------------------------------------------------------------------------------------------------------------        
         //returns a list with all current items in the shop.
         public List<Item> GetItems()
-        {                                    //TODO: apply prototype
-            return new List<Item>(itemList); //returns a copy of the list, so the original is kept intact, 
-                                             //however this is shallow copy of the original list, so changes in 
-                                             //the original list will likely influence the copy, apply 
-                                             //creational patterns like prototype to fix this. 
+        {
+            return DeepCopyItems();
         }
-
+        private List<Item> DeepCopyItems()
+        {
+            var deepCopyList = new List<Item>();
+            foreach (var item in itemList)
+            {
+                deepCopyList.Add((Item)item.Clone());
+            }
+            return deepCopyList;
+        }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItemCount()
         //------------------------------------------------------------------------------------------------------------------------        
@@ -165,15 +164,13 @@
                 AddMessage("You can't buy this item!");
                 return false;
             }
-            selectedItem.amount--;
+            selectedItem.Amount--;
 
-            if (selectedItem.amount <= 0)
+            if (selectedItem.Amount <= 0)
             {
                 Console.WriteLine("removing item");
                 itemList.Remove(selectedItem);
-                _selectedItemIndex =
-                    (int)Mathf.Clamp(_selectedItemIndex, 0, itemList.Count - 1);
-
+                _selectedItemIndex = (int)Mathf.Clamp(_selectedItemIndex, 0, itemList.Count - 1);
             }
             UpdateShopData();
             NotifyObservers();
@@ -190,7 +187,7 @@
         {
             if (GetSelectedItem() != null)
             {
-                GetSelectedItem().amount++;
+                GetSelectedItem().Amount++;
                 UpdateShopData();
                 NotifyObservers();
             }

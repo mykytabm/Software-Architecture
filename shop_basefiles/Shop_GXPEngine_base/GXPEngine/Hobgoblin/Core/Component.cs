@@ -3,12 +3,17 @@ namespace Hobgoblin.Core
 {
     public abstract class Component
     {
-        protected GGameObject _owner;
+        protected HGameObject _owner = null;
+        public Component() {}
 
-        public Component()
+        public void SetOwner(HGameObject pOwner)
         {
+            _owner = pOwner;
         }
 
-        public abstract void Update();
+        public virtual void Update()
+        {
+
+        }
     }
 }

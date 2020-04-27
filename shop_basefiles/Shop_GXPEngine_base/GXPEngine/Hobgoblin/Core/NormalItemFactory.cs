@@ -6,7 +6,7 @@ using Hobgoblin.Utils;
 using Hobgoblin.Model;
 namespace Hobgoblin.Core
 {
-    public class NormalItemFactory : ItemFactory
+    public class NormalItemFactory : IItemFactory
     {
         public Potion CreatePotion(int pMaxAmount)
         {

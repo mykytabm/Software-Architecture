@@ -8,7 +8,7 @@ namespace Hobgoblin.States
     using Hobgoblin.Controller;
     using System.Collections.Generic;
 
-    public class ShopBrowseState : GGameObject
+    public class ShopBrowseState : HGameObject
     {
         private ShopController _shopController;
         private ShopView _shopView;

@@ -7,31 +7,38 @@ namespace Hobgoblin.Core
 {
     public class CommandManager : IService
     {
-        private Dictionary<Key, ICommand[]> _keyCommands = new Dictionary<Key, ICommand[]>();
-
-        public CommandManager() { }
+        private Dictionary<Key, List<ICommand>> _keyCommands = new Dictionary<Key, List<ICommand>>();
 
         public void RegisterCommand(Key pKey, ICommand pCommand)
         {
             if (_keyCommands.ContainsKey(pKey))
             {
-                Console.WriteLine("Command found - adding command to list of commands");
-                if (!ContainsCommand(pKey, pCommand))
+                if (!ContainsCommand(pKey, pCommand) && _keyCommands[pKey].Count <= Globals.maxCommandsPerKey)
                 {
-                    _keyCommands[pKey][0] = pCommand;
+                    _keyCommands[pKey].Add(pCommand);
                 }
             }
             else
             {
-                Console.WriteLine("Command not found - adding command");
-                _keyCommands.Add(pKey, new ICommand[(Globals.maxCommandsPerKey)] { pCommand });
+                _keyCommands.Add(pKey, new List<ICommand>(Globals.maxCommandsPerKey) { pCommand });
+            }
+        }
+        public bool DeregisterCommand(Key pKey, ICommand pCommand)
+        {
+            if (_keyCommands.ContainsKey(pKey))
+            {
+                return _keyCommands[pKey].Remove(pCommand);
+            }
+            else
+            {
+                return false;
             }
         }
 
+
         public bool ContainsCommand(Key pKey, ICommand pCommand)
         {
-            var result = Utils.Utils.TindObjectInArray<ICommand>(pCommand, _keyCommands[pKey]);
-            return result;
+            return _keyCommands[pKey].Contains(pCommand);
         }
 
         public void Step()
