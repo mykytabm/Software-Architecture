@@ -26,6 +26,9 @@ namespace Hobgoblin.Core
             var amount = Globals.random.Next(1, pMaxAmount + 1); // Random.Next(inclusive min, exclusive max)
             var type = HUtils.RandomEnumValue<EWeapon>(Globals.random);
             var weapon = new Item($"{type}", "dagger", amount);
+            var attackableComponent = new Attackable(type, 5);
+            weapon.AddComponent(attackableComponent);
+
             var equipableComponent = new Equipable(null, EItemSlot.LeftHand, 100);
             weapon.AddComponent(equipableComponent);
 

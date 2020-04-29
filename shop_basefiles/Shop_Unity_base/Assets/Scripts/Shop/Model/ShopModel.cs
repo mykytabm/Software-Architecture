@@ -136,7 +136,7 @@
         //                                                  AddMessage()
         //------------------------------------------------------------------------------------------------------------------------
         //adds a message to the cache, cleaning it up if the limit is exceeded
-        private void AddMessage(string message)
+        public void AddMessage(string message)
         {
             _messages.Add(message);
             while (_messages.Count > MaxMessageQueueCount)
@@ -149,7 +149,7 @@
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
         //not implemented yet TODO
-        public Item Buy()
+        public Item SellItem()
         {
             Item selectedItem = GetSelectedItem();
             if (selectedItem == null)
@@ -158,7 +158,7 @@
                 return null;
             }
             selectedItem.Amount--;
-            AddMessage($" Whispering something rude in orc, Hobgoblin (shopKeeper) sells you {selectedItem.name} for {selectedItem.price} gold.");
+            AddMessage($" Whispering something rude in orc, Hobgoblin sells you {selectedItem.name} for {selectedItem.price} gold.");
             if (selectedItem.Amount <= 0)
             {
                 AddMessage($" It was the last {selectedItem.name} in the shop! come back later for more.");
@@ -178,7 +178,6 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Sell()
         //------------------------------------------------------------------------------------------------------------------------        
-        //not implemented yet TODO
         public void Sell()
         {
             if (GetSelectedItem() != null)
@@ -189,7 +188,14 @@
             }
         }
 
-        private void UpdateShopData()
+        public int BuyItem(Item pItem)
+        {
+            var itemGold = pItem.price;
+            _items.Add(pItem);
+            return itemGold;
+        }
+
+        public void UpdateShopData()
         {
             _data.items = _items;
             _data.itemCount = _items.Count;
@@ -219,7 +225,7 @@
             return deepCopyList;
         }
 
-        private void NotifyObservers()
+        public void NotifyObservers()
         {
             foreach (var observer in _observers)
             {

@@ -2,11 +2,12 @@
 using Hobgoblin.Core;
 using Hobgoblin.Enums;
 using System.Collections.Generic;
+using Hobgoblin.Interfaces;
 
 namespace Hobgoblin.Components
 {
 
-    public class Drinkable : Component
+    public class Drinkable : Component, IPrototype
     {
         public readonly List<EEffect> effects;
         public readonly int duration;
@@ -14,6 +15,11 @@ namespace Hobgoblin.Components
         {
             effects = pEffects;
             duration = pDuration;
+        }
+
+        public IPrototype Clone()
+        {
+            return new Drinkable(effects, duration);
         }
 
         public void Use(Actor pActor)

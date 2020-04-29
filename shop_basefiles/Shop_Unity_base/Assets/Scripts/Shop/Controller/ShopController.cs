@@ -30,6 +30,23 @@
             }
         }
 
+        public void AddMessage(string pMessage)
+        {
+            _shopModel.AddMessage(pMessage);
+            UpdateShopData();
+            UpdateView();
+        }
+
+        private void UpdateShopData()
+        {
+            _shopModel.UpdateShopData();
+        }
+
+        private void UpdateView()
+        {
+            _shopModel.NotifyObservers();
+        }
+
         public int GetItemPrice()
         {
             return _shopModel.GetSelectedItem().price;
@@ -51,9 +68,9 @@
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
-        public Item Buy()
+        public Item SellItem()
         {
-            return _shopModel.Buy();
+            return _shopModel.SellItem();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +78,11 @@
         //------------------------------------------------------------------------------------------------------------------------        
         public void Sell()
         {
-            _shopModel.Sell();
+            //return _shopModel.Sell(pItem);
+        }
+        public int BuyItem(Item pItem)
+        {
+            return _shopModel.BuyItem(pItem);
         }
     }
 }

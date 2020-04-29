@@ -73,12 +73,12 @@ namespace Hobgoblin.View
             _item = pData.selectedItem;
             if (_item != null)
             {
-                _itemTexture = new Texture2D("media/" + _item.iconName + ".png");
+                _itemTexture = IconCache.GetCachedTexture(_item.iconName);
 
             }
             else
             {
-
+                _itemTexture = IconCache.GetCachedTexture("item");
             }
         }
     }

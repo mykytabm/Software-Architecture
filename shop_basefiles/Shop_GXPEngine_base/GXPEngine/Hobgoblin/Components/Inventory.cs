@@ -4,10 +4,11 @@ using Hobgoblin.Core;
 using Hobgoblin.Model;
 using Hobgoblin.Utils;
 using Hobgoblin.Enums;
+using Hobgoblin.Interfaces;
 
 namespace Hobgoblin.Components
 {
-    public class Inventory : Component
+    public class Inventory : Component, IPrototype
     {
         private List<Item> _items;
         private int _gold;
@@ -46,6 +47,12 @@ namespace Hobgoblin.Components
         private bool SameItemExists(Item pItem)
         {
             return _items.Exists(item => item == pItem);
+        }
+
+        public IPrototype Clone()
+        {
+            var deepCopyItemList = HUtils.DeepCopyList(_items);
+            return new Inventory(deepCopyItemList, deepCopyItemList.Capacity - deepCopyItemList.Count, _gold);
         }
     }
 }

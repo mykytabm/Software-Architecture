@@ -4,7 +4,7 @@ using GXPEngine;
 
 namespace Hobgoblin.Core
 {
-    public class HGameObject : GameObject
+    public class HGameObject
     {
         protected List<Component> _components = new List<Component>();
 
@@ -69,13 +69,6 @@ namespace Hobgoblin.Core
                 }
             }
             return false;
-        }
-        public virtual void Update()
-        {
-            foreach (var component in _components)
-            {
-                component.Update();
-            }
         }
     }
 }

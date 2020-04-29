@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Hobgoblin.Core;
 using Hobgoblin.Enums;
 using Hobgoblin.Model;
+using Hobgoblin.Components;
 
 namespace Hobgoblin.UnitTests
 {
@@ -24,6 +25,7 @@ namespace Hobgoblin.UnitTests
             Item potion = _factory.CreatePotion(numOfPotions);
 
             Assert.AreNotEqual("", potion.name);
+            Assert.Contains(EEffect.none, potion.GetComponent<Drinkable>().effects);
             Assert.AreNotEqual(0, potion.Amount);
             Assert.AreNotEqual(0, potion.iconName);
         }
@@ -36,6 +38,7 @@ namespace Hobgoblin.UnitTests
 
             Assert.AreNotEqual("", weapon.name);
             Assert.AreNotEqual(0, weapon.Amount);
+            Assert.Contains(EWeapon.none, weapon.GetComponent<Equipable>().effects);
             Assert.AreNotEqual(0, weapon.iconName);
         }
     }

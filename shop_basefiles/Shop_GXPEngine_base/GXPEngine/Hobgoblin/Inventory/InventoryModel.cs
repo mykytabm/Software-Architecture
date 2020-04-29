@@ -12,13 +12,15 @@ namespace Hobgoblin.InventoryMvc
         private InventoryData _data;
 
         private List<Item> _items;
+        private List<string> _messages;
+        private const int MaxMessageQueueCount = 4; //it caches the last four messages
         private int _selectedItemIndex = 0;
         private int _gold;
-
 
         public InventoryModel(Inventory pInventory)
         {
             _observers = new List<IObserver<InventoryData>>();
+            _messages = new List<string>();
             _items = pInventory.GetItems();
             _gold = pInventory.Gold;
             _data = new InventoryData();
@@ -31,6 +33,18 @@ namespace Hobgoblin.InventoryMvc
         }
 
         //------------------------------------------------------------------------------------------------------------------------
+        //                                                  AddMessage()
+        //------------------------------------------------------------------------------------------------------------------------
+        //adds a message to the cache, cleaning it up if the limit is exceeded
+        public void AddMessage(string message)
+        {
+            _messages.Add(message);
+            while (_messages.Count > MaxMessageQueueCount)
+            {
+                _messages.RemoveAt(0);
+            }
+        }
+        //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetSelectedItem()
         //------------------------------------------------------------------------------------------------------------------------        
         //returns the selected item
@@ -38,7 +52,7 @@ namespace Hobgoblin.InventoryMvc
         {
             if (_selectedItemIndex >= 0 && _selectedItemIndex < _items.Count)
             {
-                return _items[_selectedItemIndex];
+                return (Item)_items[_selectedItemIndex].Clone();
             }
             else
             {
@@ -125,7 +139,7 @@ namespace Hobgoblin.InventoryMvc
             return new Unsubscriber<InventoryData>(_observers, observer);
         }
 
-        private void NotifyObservers()
+        public void NotifyObservers()
         {
             foreach (var observer in _observers)
             {
@@ -133,12 +147,24 @@ namespace Hobgoblin.InventoryMvc
             }
         }
 
-        private void UpdateData()
+        private List<string> DeepCopyMessages()
+        {
+            var deepCopyList = new List<string>();
+            foreach (var msg in _messages)
+            {
+                deepCopyList.Add((string)msg.Clone());
+            }
+            return deepCopyList;
+        }
+
+        public void UpdateData()
         {
             _data.items = GetItems();
             _data.gold = _gold;
             _data.selectedItemIndex = _selectedItemIndex;
             _data.itemCount = _items.Count;
+            _data.messages = DeepCopyMessages();
+
         }
     }
 }

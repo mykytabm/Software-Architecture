@@ -5,16 +5,19 @@ using Hobgoblin.InventoryMvc;
 using Hobgoblin.Model;
 using System.Collections.Generic;
 using Hobgoblin.View;
+using GXPEngine;
 
 namespace Hobgoblin.States
 {
-    public class InventoryBrowseState : HGameObject
+    public class InventoryBrowseState : GameObject
     {
         private Inventory _inventory;
         private List<Item> _items;
         private HGameObject _owner;
         private InventoryModel _model;
         private InventoryView _view;
+        private InventoryMessageView _messageView;
+
         private InventoryController _controller;
 
         public InventoryBrowseState(Inventory pInventory)
@@ -29,11 +32,17 @@ namespace Hobgoblin.States
             _view.Subscribe(_model);
             AddChild(_view);
             Helper.AlignToCenter(_view, true, true);
+
+            _messageView = new InventoryMessageView();
+            _messageView.Subscribe(_model);
+            AddChild(_messageView);
+            Helper.AlignToCenter(_messageView, true, false);
         }
 
         public void Step()
         {
             _view.Step();
+            _messageView.Step();
         }
 
     }

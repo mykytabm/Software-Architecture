@@ -20,13 +20,13 @@ namespace Hobgoblin.ShopCommands
             var inventory = _customer.GetComponent<Inventory>();
             if (inventory.Gold > _shopController.GetItemPrice())
             {
-                var itemToBuy = _shopController.Buy();
+                var itemToBuy = _shopController.SellItem();
                 inventory.AddItem(itemToBuy);
                 inventory.AddGold(-itemToBuy.price);
             }
             else
             {
-
+                _shopController.AddMessage("You do not have enough gold");
             }
         }
     }

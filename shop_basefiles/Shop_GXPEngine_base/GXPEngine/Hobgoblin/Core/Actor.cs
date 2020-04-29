@@ -43,10 +43,5 @@ namespace Hobgoblin.Core
         {
 
         }
-
-        public override void Update()
-        {
-            base.Update();
-        }
     }
 }

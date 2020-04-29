@@ -1,9 +1,11 @@
 ﻿using System;
 using Hobgoblin.Core;
 using Hobgoblin.Enums;
+using Hobgoblin.Interfaces;
+
 namespace Hobgoblin.Components
 {
-    public class Attackable : Component
+    public class Attackable : Component, IPrototype
     {
         public readonly EWeapon type;
         private int _damage;
@@ -13,6 +15,11 @@ namespace Hobgoblin.Components
         {
             type = pType;
             _maxDamage = pDamage;
+        }
+
+        public IPrototype Clone()
+        {
+            return new Attackable(type, _damage);
         }
 
         // this is just an idea how would components interact between each other

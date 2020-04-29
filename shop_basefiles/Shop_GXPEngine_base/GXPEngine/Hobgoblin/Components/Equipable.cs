@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using GXPEngine;
 using Hobgoblin.Core;
 using Hobgoblin.Enums;
+using Hobgoblin.Interfaces;
+
 namespace Hobgoblin.Components
 {
-    public class Equipable : Component
+    public class Equipable : Component, IPrototype
     {
         public readonly List<EEffect> effects;
         public readonly EItemSlot slot;
@@ -18,6 +20,11 @@ namespace Hobgoblin.Components
             effects = pEffects;
             slot = pSlot;
             _durability = pDurability;
+        }
+
+        public IPrototype Clone()
+        {
+            return new Equipable(effects, slot, _durability);
         }
     }
 }

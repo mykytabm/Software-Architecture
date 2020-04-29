@@ -27,23 +27,20 @@ namespace Hobgoblin.InventoryMvc
         private InventoryController _controller;
         private CommandManager _commandManager;
 
-        private Dictionary<string, Texture2D> _iconCache;
-        private Texture2D _selectionIcon;
-
         public InventoryView(InventoryController pController) : base(340, 340)
         {
             _controller = pController;
             _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
-            _iconCache = new Dictionary<string, Texture2D>();
             _items = new List<Item>();
             _keyCommands = new List<KeyCommand>();
-            _selectionIcon = new Texture2D("media/frame.png");
 
             //----------------------------- Create Commands --------------------------------//
             var moveSelectionLeft = new MoveInventorySelectionCommand(_controller, this, -1, 0);
             var moveSelectionRight = new MoveInventorySelectionCommand(_controller, this, 1, 0);
             var moveSelectionUp = new MoveInventorySelectionCommand(_controller, this, 0, -1);
             var moveSelectionDown = new MoveInventorySelectionCommand(_controller, this, 0, 1);
+            var equipItem = new EquipItemCommand(MyGame.Player, _controller);
+
 
             //-------------------------- Add Commands to list ------------------------------//
             _keyCommands = new List<KeyCommand>()
@@ -51,8 +48,9 @@ namespace Hobgoblin.InventoryMvc
                 new KeyCommand(Key.LEFT, moveSelectionLeft),
                 new KeyCommand(Key.RIGHT, moveSelectionRight),
                 new KeyCommand(Key.UP, moveSelectionUp),
-                new KeyCommand(Key.DOWN, moveSelectionDown)
-            };
+                new KeyCommand(Key.DOWN, moveSelectionDown),
+                new KeyCommand(Key.E,equipItem)
+        };
 
             RegisterCommands();
         }
@@ -60,6 +58,7 @@ namespace Hobgoblin.InventoryMvc
         public void Step()
         {
             DrawBackground();
+            DrawName();
             DrawItems();
         }
 
@@ -154,6 +153,10 @@ namespace Hobgoblin.InventoryMvc
             return index / Columns; //rounds down
         }
 
+        private void DrawName()
+        {
+            graphics.DrawString("  Inventory of a player", SystemFonts.CaptionFont, Brushes.White, 0, 0);
+        }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  DrawBackground()
         //------------------------------------------------------------------------------------------------------------------------        
@@ -189,7 +192,8 @@ namespace Hobgoblin.InventoryMvc
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawSelectionIcon(int iconX, int iconY)
         {
-            graphics.DrawImage(_selectionIcon.bitmap, iconX, iconY);
+            Texture2D iconTexture = IconCache.GetCachedTexture("frame");
+            graphics.DrawImage(iconTexture.bitmap, iconX, iconY);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -197,23 +201,8 @@ namespace Hobgoblin.InventoryMvc
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawItem(Item item, int iconX, int iconY)
         {
-            Texture2D iconTexture = GetCachedTexture(item.iconName);
+            Texture2D iconTexture = IconCache.GetCachedTexture(item.iconName);
             graphics.DrawImage(iconTexture.bitmap, iconX, iconY, IconSize, IconSize);
         }
-
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  GetCachedTexture()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private Texture2D GetCachedTexture(string filename)
-        {
-            if (!_iconCache.ContainsKey(filename))
-            {
-                _iconCache.Add(filename, new Texture2D("media/" + filename + ".png"));
-            }
-            return _iconCache[filename];
-        }
-
-
-
     }
 }

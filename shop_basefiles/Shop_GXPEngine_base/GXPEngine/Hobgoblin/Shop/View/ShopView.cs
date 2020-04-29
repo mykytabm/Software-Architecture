@@ -9,7 +9,6 @@
     using Hobgoblin.Controller;
     using Hobgoblin.Core;
     using Hobgoblin.ShopCommands;
-    using Hobgoblin.Interfaces;
     using Hobgoblin.Utils;
 
     //This Class draws the icons for the items in the store
@@ -29,9 +28,6 @@
 
         private List<Item> _items;
         private List<KeyCommand> _keyCommands;
-        //the icon cache is built in here, that violates the S.R. principle.
-        private Dictionary<string, Texture2D> _iconCache;
-        private Texture2D _selectionIcon;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopView()
@@ -40,9 +36,7 @@
         {
             _shopController = pShopController;
             _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
-            _iconCache = new Dictionary<string, Texture2D>();
             _items = new List<Item>();
-            _selectionIcon = new Texture2D("media/frame.png");
             _customer = pCustomer;
 
             x = (game.width - width) / 2;
@@ -54,7 +48,6 @@
             var moveSelectionUp = new MoveSelectionCommand(_shopController, this, 0, -1);
             var moveSelectionDown = new MoveSelectionCommand(_shopController, this, 0, 1);
             var buyItem = new BuyItemCommand(_shopController, _customer);
-            var sellItem = new SellItemCommand(_shopController);
 
             //-------------------------- Add Commands to list ------------------------------//
             _keyCommands = new List<KeyCommand>()
@@ -64,11 +57,9 @@
                 new KeyCommand(Key.UP, moveSelectionUp),
                 new KeyCommand(Key.DOWN, moveSelectionDown),
                 new KeyCommand(Key.BACKSPACE, buyItem),
-                new KeyCommand(Key.SPACE, sellItem)
             };
 
             RegisterCommands();
-
         }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Step()
@@ -76,6 +67,7 @@
         public void Step()
         {
             DrawBackground();
+            DrawName();
             DrawItems();
         }
 
@@ -177,6 +169,13 @@
         }
 
         //------------------------------------------------------------------------------------------------------------------------
+        //                                                  DrawName()
+        //------------------------------------------------------------------------------------------------------------------------        
+        private void DrawName()
+        {
+            graphics.DrawString("  Hobgoblin's shop", SystemFonts.CaptionFont, Brushes.White, 0, 0);
+        }
+        //------------------------------------------------------------------------------------------------------------------------
         //                                                  DrawBackground()
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawBackground()
@@ -211,7 +210,8 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawSelectionIcon(int iconX, int iconY)
         {
-            graphics.DrawImage(_selectionIcon.bitmap, iconX, iconY);
+            Texture2D selectionTexture = IconCache.GetCachedTexture("frame");
+            graphics.DrawImage(selectionTexture.bitmap, iconX, iconY);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -219,21 +219,8 @@
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawItem(Item item, int iconX, int iconY)
         {
-            Texture2D iconTexture = GetCachedTexture(item.iconName);
+            Texture2D iconTexture = IconCache.GetCachedTexture(item.iconName);
             graphics.DrawImage(iconTexture.bitmap, iconX, iconY, IconSize, IconSize);
         }
-
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  GetCachedTexture()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private Texture2D GetCachedTexture(string filename)
-        {
-            if (!_iconCache.ContainsKey(filename))
-            {
-                _iconCache.Add(filename, new Texture2D("media/" + filename + ".png"));
-            }
-            return _iconCache[filename];
-        }
-
     }
 }

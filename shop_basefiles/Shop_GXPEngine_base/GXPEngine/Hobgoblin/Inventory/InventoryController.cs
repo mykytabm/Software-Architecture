@@ -21,6 +21,29 @@ namespace Hobgoblin.InventoryMvc
                 _model.SelectItem(pItem);
             }
         }
+
+        public Item GetSelectedItem()
+        {
+            return _model.GetSelectedItem();
+        }
+
+        public void AddMessage(string pMessage)
+        {
+            _model.AddMessage(pMessage);
+            UpdateData();
+            NotifyObservers();
+        }
+
+        private void NotifyObservers()
+        {
+            _model.NotifyObservers();
+        }
+
+        private void UpdateData()
+        {
+            _model.UpdateData();
+        }
+
         public void SelectItem(int pIndex)
         {
             _model.SelectItemByIndex(pIndex);

@@ -65,11 +65,12 @@ namespace Hobgoblin
             _shopItems = generator.CreateRandomItems(10);
             var inventoryItems = generator.CreateRandomItems(3);
 
-            var playerInventory = new Inventory(inventoryItems, 4, 200);
+            var playerInventory = new Inventory(inventoryItems, 4, 100);
+            var playerEquipment = new Equipment(2);
             _player = new Humanoid();
             _player.AddComponent(playerInventory);
+            _player.AddComponent(playerEquipment);
             Player = _player;
-            AddChild(_player);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

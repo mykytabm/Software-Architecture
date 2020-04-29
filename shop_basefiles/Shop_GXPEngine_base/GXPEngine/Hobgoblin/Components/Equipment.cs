@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Hobgoblin.Core;
 using Hobgoblin.Model;
 using Hobgoblin.Enums;
+using Hobgoblin.Interfaces;
+
 namespace Hobgoblin.Components
 {
-    public class Equipment : Component
+    public class Equipment : Component, IPrototype
     {
         private List<EquipmentSlot> _body;
         private List<EquipmentSlot> _belt;
@@ -27,7 +29,18 @@ namespace Hobgoblin.Components
                 _belt.Add(new EquipmentSlot(EItemSlot.BeltPocket));
             }
         }
-        public bool Equip(Item pItem)
+        public Equipment(List<EquipmentSlot> pBody, List<EquipmentSlot> pBelt)
+        {
+            _body = pBody;
+            _belt = pBelt;
+        }
+
+        public IPrototype Clone()
+        {
+            return new Equipment(_body, _belt);
+        }
+
+        public bool TryEquip(Item pItem)
         {
             var equipable = pItem.GetComponent<Equipable>();
             if (equipable != null)

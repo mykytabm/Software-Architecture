@@ -9,12 +9,15 @@ namespace Hobgoblin.InventoryMvc
         public int gold;
         public int selectedItemIndex;
         public int itemCount;
+        public List<string> messages;
         public InventoryData()
         {
             items = new List<Item>();
+            messages = new List<string>();
             gold = 0;
             selectedItemIndex = 0;
             itemCount = 0;
+
         }
     }
 }
