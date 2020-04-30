@@ -4,6 +4,7 @@ using System.Drawing;
 using GXPEngine;
 using GXPEngine.Core;
 using Hobgoblin.Commands.InventoryCommands;
+using Hobgoblin.Controller;
 using Hobgoblin.Core;
 using Hobgoblin.Model;
 using Hobgoblin.Utils;
@@ -25,14 +26,17 @@ namespace Hobgoblin.InventoryMvc
         private int _itemCount;
 
         private InventoryController _controller;
+        private ShopController _shopController;
         private CommandManager _commandManager;
 
-        public InventoryView(InventoryController pController) : base(600, 340)
+        public InventoryView(InventoryController pInventoryController, ShopController pShopController = null) : base(600, 340)
         {
-            _controller = pController;
-            _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
-            _items = new List<Item>();
             _keyCommands = new List<KeyCommand>();
+            _items = new List<Item>();
+
+            _shopController = pShopController;
+            _controller = pInventoryController;
+            _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
 
             //----------------------------- Create Commands --------------------------------//
             var moveSelectionLeft = new MoveInventorySelectionCommand(_controller, this, -1, 0);
@@ -41,6 +45,7 @@ namespace Hobgoblin.InventoryMvc
             var moveSelectionDown = new MoveInventorySelectionCommand(_controller, this, 0, 1);
             var equipItem = new EquipItemCommand(MyGame.Player, _controller);
             var drinkItem = new DrinkItemCommand(MyGame.Player, _controller);
+            var sellItem = new SellItemCommand(pInventoryController, pShopController);
 
 
             //-------------------------- Add Commands to list ------------------------------//
@@ -51,7 +56,8 @@ namespace Hobgoblin.InventoryMvc
                 new KeyCommand(Key.UP, moveSelectionUp),
                 new KeyCommand(Key.DOWN, moveSelectionDown),
                 new KeyCommand(Key.E,equipItem),
-                new KeyCommand(Key.Q,drinkItem)
+                new KeyCommand(Key.Q,drinkItem),
+                new KeyCommand(Key.SPACE,sellItem)
         };
 
             RegisterCommands();
@@ -85,17 +91,14 @@ namespace Hobgoblin.InventoryMvc
             }
             return _selectedItemId;
         }
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Subscribe (Inventory Model)
+        //------------------------------------------------------------------------------------------------------------------------        
         public void Subscribe(InventoryModel pProvider)
         {
             pProvider.Subscribe(this);
         }
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  GetColumnByIndex()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private int GetIndexFromGridPosition(int column, int row)
-        {
-            return row * Columns + column;
-        }
+
         public void OnCompleted()
         {
             throw new NotImplementedException();
@@ -114,6 +117,18 @@ namespace Hobgoblin.InventoryMvc
             _gold = pData.gold;
         }
 
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  GetColumnByIndex()
+        //------------------------------------------------------------------------------------------------------------------------        
+        private int GetIndexFromGridPosition(int column, int row)
+        {
+            return row * Columns + column;
+        }
+
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //                             GXPEngine override   OnDestroy()
+        //------------------------------------------------------------------------------------------------------------------------        
         protected override void OnDestroy()
         {
             DeregisterCommands();

@@ -35,7 +35,6 @@ namespace Hobgoblin
             SetupCommands();
 
             CreateObjects();
-
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -63,17 +62,17 @@ namespace Hobgoblin
             //                          Item Generator 
             generator = new Generator(new NormalItemFactory());
 
-            //                            Item Lists 
+            //                          Item Lists 
             var _shopItemList = generator.CreateRandomItems(10);
             var inventoryItemList = generator.CreateRandomItems(3);
 
 
 
-            //                             Player 
+            //                          Player 
             _player = new Humanoid(inventoryItemList, 4, 100, 2);
             Player = _player;
 
-            //                        Shop Browse State 
+            //                          Shop Browse State 
             _shopBrowseState = new ShopBrowseState(_shopItemList, _player);
             AddChild(_shopBrowseState);
             _stepAction += _shopBrowseState.Step;
@@ -109,7 +108,10 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         private void OpenInventory()
         {
-            _inventoryBrowseState = new InventoryBrowseState(_player.GetComponent<Inventory>());
+            _inventoryBrowseState = new InventoryBrowseState(
+                _player.GetComponent<Inventory>(),
+                _shopBrowseState.GetController()
+                );
             AddChild(_inventoryBrowseState);
             _stepAction += _inventoryBrowseState.Step;
             UnsubscribeShop();

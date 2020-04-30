@@ -6,6 +6,7 @@ using Hobgoblin.Model;
 using System.Collections.Generic;
 using Hobgoblin.View;
 using GXPEngine;
+using Hobgoblin.Controller;
 
 namespace Hobgoblin.States
 {
@@ -17,10 +18,9 @@ namespace Hobgoblin.States
         private InventoryModel _model;
         private InventoryView _view;
         private InventoryMessageView _messageView;
-
         private InventoryController _controller;
 
-        public InventoryBrowseState(Inventory pInventory)
+        public InventoryBrowseState(Inventory pInventory, ShopController pShopController = null)
         {
             _inventory = pInventory;
 
@@ -28,7 +28,7 @@ namespace Hobgoblin.States
 
             _controller = new InventoryController(_model);
 
-            _view = new InventoryView(_controller);
+            _view = new InventoryView(_controller, pShopController);
             _view.Subscribe(_model);
             AddChild(_view);
             Helper.AlignToCenter(_view, true, true);

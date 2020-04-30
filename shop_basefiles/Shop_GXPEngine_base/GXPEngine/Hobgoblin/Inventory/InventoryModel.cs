@@ -11,34 +11,45 @@ namespace Hobgoblin.InventoryMvc
         private List<IObserver<InventoryData>> _observers;
         private InventoryData _data;
 
-        private List<Item> _items;
         private List<string> _messages;
         private const int MaxMessageQueueCount = 4; //it caches the last four messages
         private int _selectedItemIndex = 0;
-        private int _gold;
+        private Inventory _inventory;
 
         public InventoryModel(Inventory pInventory)
         {
+            _inventory = pInventory;
             _observers = new List<IObserver<InventoryData>>();
             _messages = new List<string>();
-            _items = pInventory.GetItems();
-            _gold = pInventory.Gold;
+
             _data = new InventoryData();
             UpdateData();
         }
+
         public void RemoveCurrentItem()
         {
-            _items.RemoveAt(_selectedItemIndex);
-            if (_selectedItemIndex > _items.Count - 1)
+            _inventory.RemoveItemAt(_selectedItemIndex);
+            if (_selectedItemIndex > _inventory.GetItems().Count-1)
             {
-                _selectedItemIndex = _items.Count - 1;
+                _selectedItemIndex = _inventory.GetItems().Count - 1;
             }
+            else if (_selectedItemIndex < 0)
+            {
+                _selectedItemIndex = 0;
+            }
+
             UpdateData();
             NotifyObservers();
         }
+
+        public void AddGold(int pGold)
+        {
+            _inventory.AddGold(pGold);
+        }
+
         public List<Item> GetItems()
         {
-            return HUtils.DeepCopyList(_items);
+            return _inventory.GetItems();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -59,31 +70,21 @@ namespace Hobgoblin.InventoryMvc
         //returns the selected item
         public Item GetSelectedItem()
         {
-            if (_selectedItemIndex >= 0 && _selectedItemIndex < _items.Count)
-            {
-                return (Item)_items[_selectedItemIndex].Clone();
-            }
-            else
-            {
-                return null;
-            }
+            return _inventory.GetItemAt(_selectedItemIndex);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  SelectItem()
         //------------------------------------------------------------------------------------------------------------------------
         //attempts to select the given item, fails silently
-        public void SelectItem(Item item)
+        public void SelectItem(Item pItem)
         {
-            if (item != null)
+            if (pItem != null && _inventory.GetItems().Contains(pItem))
             {
-                int index = _items.IndexOf(item);
-                if (index >= 0)
-                {
-                    _selectedItemIndex = index;
-                    UpdateData();
-                    NotifyObservers();
-                }
+                int index = _inventory.GetItems().IndexOf(pItem);
+                _selectedItemIndex = index;
+                UpdateData();
+                NotifyObservers();
             }
         }
 
@@ -93,7 +94,7 @@ namespace Hobgoblin.InventoryMvc
         //attempts to select the item, specified by 'index', fails silently
         public void SelectItemByIndex(int index)
         {
-            if (index >= 0 && index < _items.Count)
+            if (index >= 0 && index < _inventory.GetItems().Count)
             {
                 _selectedItemIndex = index;
                 UpdateData();
@@ -117,23 +118,16 @@ namespace Hobgoblin.InventoryMvc
         //returns the number of items
         private int GetItemCount()
         {
-            return _items.Count;
+            return _inventory.GetItems().Count;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItemByIndex()
         //------------------------------------------------------------------------------------------------------------------------        
         //tries to get an item, specified by index. returns null if unsuccessful
-        public Item GetItemByIndex(int index)
+        public Item GetItemByIndex(int pIndex)
         {
-            if (index >= 0 && index < _items.Count)
-            {
-                return _items[index];
-            }
-            else
-            {
-                return null;
-            }
+            return _inventory.GetItemAt(pIndex);
         }
 
         public IDisposable Subscribe(IObserver<InventoryData> observer)
@@ -168,10 +162,10 @@ namespace Hobgoblin.InventoryMvc
 
         public void UpdateData()
         {
-            _data.items = GetItems();
-            _data.gold = _gold;
+            _data.items = _inventory.GetItems();
+            _data.gold = _inventory.Gold;
             _data.selectedItemIndex = _selectedItemIndex;
-            _data.itemCount = _items.Count;
+            _data.itemCount = _inventory.GetItems().Count;
             _data.messages = DeepCopyMessages();
 
         }

@@ -45,6 +45,10 @@ namespace Hobgoblin.States
             AddChild(_shopMessageView);
             Helper.AlignToCenter(_shopMessageView, true, false);
         }
+        public ShopController GetController()
+        {
+            return _shopController;
+        }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Step()
         //------------------------------------------------------------------------------------------------------------------------
