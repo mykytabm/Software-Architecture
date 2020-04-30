@@ -29,7 +29,8 @@ namespace Hobgoblin.InventoryMvc
         private ShopController _shopController;
         private CommandManager _commandManager;
 
-        public InventoryView(InventoryController pInventoryController, ShopController pShopController = null) : base(600, 340)
+        public InventoryView(InventoryController pInventoryController, ShopController pShopController = null) :
+            base(560, 340)
         {
             _keyCommands = new List<KeyCommand>();
             _items = new List<Item>();
@@ -172,7 +173,7 @@ namespace Hobgoblin.InventoryMvc
 
         private void DrawName()
         {
-            graphics.DrawString("  Inventory of a player", SystemFonts.CaptionFont, Brushes.White, 0, 0);
+            graphics.DrawString("Players inventory", SystemFonts.CaptionFont, Brushes.White, width / 2 - 80, 0);
         }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  DrawBackground()

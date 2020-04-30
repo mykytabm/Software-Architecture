@@ -64,12 +64,11 @@ namespace Hobgoblin.InventoryMvc
         //Draw messages onto this messagebox
         private void DrawMessages()
         {
-            graphics.DrawString("Use ARROW KEYS to navigate. Press Q to try drinking item, Press E to try equipping item", SystemFonts.CaptionFont, Brushes.White, 0, 0);
 
             for (int i = 0; i < _messages.Count; ++i)
             {
                 String message = _messages[i];
-                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.White, 0, FontHeight + i * FontHeight);
+                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.White, 0, i * FontHeight);
             }
         }
 

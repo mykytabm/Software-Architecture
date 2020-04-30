@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Hobgoblin.Commands.PlayerCommands;
 using Hobgoblin.Utils;
 using System;
+using System.Drawing;
 
 namespace Hobgoblin
 {
@@ -22,7 +23,7 @@ namespace Hobgoblin
         private CommandManager _commandManager;
         private Humanoid _player;
         private Action _stepAction;
-
+        private Canvas _controlCanvas;
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  MyGame()
         //------------------------------------------------------------------------------------------------------------------------        
@@ -67,7 +68,6 @@ namespace Hobgoblin
             var inventoryItemList = generator.CreateRandomItems(3);
 
 
-
             //                          Player 
             _player = new Humanoid(inventoryItemList, 4, 100, 2);
             Player = _player;
@@ -77,6 +77,11 @@ namespace Hobgoblin
             AddChild(_shopBrowseState);
             _stepAction += _shopBrowseState.Step;
             _shopBrowseState.RegisterViewCommands();
+
+            _controlCanvas = new Canvas(width, 100);
+            _controlCanvas.y = height - _controlCanvas.height;
+            AddChild(_controlCanvas);
+            _stepAction += DrawControls;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -138,7 +143,14 @@ namespace Hobgoblin
                 _shopBrowseState.RegisterViewCommands();
             }
         }
+        private void DrawControls()
+        {
+            _controlCanvas.graphics.Clear(Color.DarkOliveGreen);
+            _controlCanvas.graphics.DrawString(" Use ARROW KEYS to navigate", SystemFonts.CaptionFont, Brushes.White, 0, 0);
+            _controlCanvas.graphics.DrawString(" Press 'I' to toggle Inventory", SystemFonts.CaptionFont, Brushes.White, 0, SystemFonts.CaptionFont.Height);
+            _controlCanvas.graphics.DrawString(" Press 'Space' to buy item when in Shop and sell when in Inventory ", SystemFonts.CaptionFont, Brushes.White, 0, SystemFonts.CaptionFont.Height * 2);
 
+        }
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Unsubscribe Shop()
         //------------------------------------------------------------------------------------------------------------------------        

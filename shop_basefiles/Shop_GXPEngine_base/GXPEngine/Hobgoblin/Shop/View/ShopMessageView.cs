@@ -64,12 +64,10 @@ namespace Hobgoblin.View
         //Draw messages onto this messagebox
         private void DrawMessages()
         {
-            graphics.DrawString("Use ARROW KEYS to navigate. Press SPACE to buy, BKSPACE to sell.", SystemFonts.CaptionFont, Brushes.White, 0, 0);
-
             for (int i = 0; i < _messages.Count; ++i)
             {
                 String message = _messages[i];
-                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.White, 0, FontHeight + i * FontHeight);
+                graphics.DrawString(message, SystemFonts.CaptionFont, Brushes.White, 0, i * FontHeight);
             }
         }
 

@@ -19,22 +19,26 @@ namespace Hobgoblin.Commands.InventoryCommands
         public void Execute()
         {
             var itemToEquip = _controller.GetSelectedItem();
-            var actorEquipment = _actor.GetComponent<Equipment>();
-            if (actorEquipment != null)
+            if (itemToEquip != null)
             {
-                if (actorEquipment.TryEquip(itemToEquip))
+                var actorEquipment = _actor.GetComponent<Equipment>();
+                if (actorEquipment != null)
                 {
-                    _controller.AddMessage("item sucessfully equiped, all because you are using cool component system");
+                    if (actorEquipment.TryEquip(itemToEquip))
+                    {
+                        _controller.AddMessage("item sucessfully equiped, all because you are using cool component system");
+                    }
+                    else
+                    {
+                        _controller.AddMessage("this item is not equipable, you cant equip it.");
+                    }
                 }
                 else
                 {
-                    _controller.AddMessage("this item is not equipable, you cant equip it.");
+                    _controller.AddMessage("you do not have equipment so you cant equip this item. ");
                 }
             }
-            else
-            {
-                _controller.AddMessage("you do not have equipment so you cant equip this item. ");
-            }
+
 
         }
     }

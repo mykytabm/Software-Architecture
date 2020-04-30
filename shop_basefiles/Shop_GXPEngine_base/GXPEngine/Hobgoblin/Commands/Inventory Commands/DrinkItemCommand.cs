@@ -21,12 +21,15 @@ namespace Hobgoblin.Commands.InventoryCommands
         public void Execute()
         {
             var itemToDrink = _controller.GetSelectedItem();
-            var drinkable = itemToDrink.GetComponent<Drinkable>();
-            if (drinkable != null)
+            if (itemToDrink != null)
             {
-                _actor.ApplyEffect(drinkable.effect);
-                _controller.AddMessage($"you are under effect of {drinkable.effect}");
-                _controller.RemoveCurrentItem();
+                var drinkable = itemToDrink.GetComponent<Drinkable>();
+                if (drinkable != null)
+                {
+                    _actor.ApplyEffect(drinkable.effect);
+                    _controller.AddMessage($"you are under effect of {drinkable.effect}");
+                    _controller.RemoveCurrentItem();
+                }
             }
         }
     }

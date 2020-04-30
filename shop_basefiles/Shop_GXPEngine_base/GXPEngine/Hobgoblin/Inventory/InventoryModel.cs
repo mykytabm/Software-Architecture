@@ -29,7 +29,7 @@ namespace Hobgoblin.InventoryMvc
         public void RemoveCurrentItem()
         {
             _inventory.RemoveItemAt(_selectedItemIndex);
-            if (_selectedItemIndex > _inventory.GetItems().Count-1)
+            if (_selectedItemIndex > _inventory.GetItems().Count - 1)
             {
                 _selectedItemIndex = _inventory.GetItems().Count - 1;
             }
@@ -152,12 +152,13 @@ namespace Hobgoblin.InventoryMvc
 
         private List<string> DeepCopyMessages()
         {
-            var deepCopyList = new List<string>();
-            foreach (var msg in _messages)
-            {
-                deepCopyList.Add((string)msg.Clone());
-            }
-            return deepCopyList;
+            //var deepCopyList = new List<string>();
+            //foreach (var msg in _messages)
+            //{
+            //    deepCopyList.Add((string)msg.Clone());
+            //}
+            //return deepCopyList;
+            return _messages;
         }
 
         public void UpdateData()
