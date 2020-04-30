@@ -25,7 +25,14 @@ namespace Hobgoblin.Core
         }
         public void RegisterCommand(KeyCommand pCommand)
         {
-            _keyCommands.Add(pCommand);
+            //if (_keyCommands.Exists(c => c == pCommand))
+            //{
+
+            //}
+            //else
+            //{
+                _keyCommands.Add(pCommand);
+            //}
         }
 
         public bool DeregisterCommand(Key pKey, ICommand pCommand)

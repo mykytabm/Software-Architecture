@@ -56,7 +56,7 @@
                 new KeyCommand(Key.RIGHT, moveSelectionRight),
                 new KeyCommand(Key.UP, moveSelectionUp),
                 new KeyCommand(Key.DOWN, moveSelectionDown),
-                new KeyCommand(Key.BACKSPACE, buyItem),
+                new KeyCommand(Key.SPACE, buyItem),
             };
         }
 

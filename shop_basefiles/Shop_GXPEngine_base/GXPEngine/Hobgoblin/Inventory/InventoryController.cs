@@ -22,6 +22,11 @@ namespace Hobgoblin.InventoryMvc
             }
         }
 
+        public void RemoveCurrentItem()
+        {
+            _model.RemoveCurrentItem();
+        }
+
         public Item GetSelectedItem()
         {
             return _model.GetSelectedItem();

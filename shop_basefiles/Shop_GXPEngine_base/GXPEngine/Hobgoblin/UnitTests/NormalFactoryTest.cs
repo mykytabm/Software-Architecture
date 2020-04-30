@@ -25,7 +25,7 @@ namespace Hobgoblin.UnitTests
             Item potion = _factory.CreatePotion(numOfPotions);
 
             Assert.AreNotEqual("", potion.name);
-            Assert.Contains(EEffect.none, potion.GetComponent<Drinkable>().effects);
+            Assert.AreNotEqual(EEffect.none, potion.GetComponent<Drinkable>().effect);
             Assert.AreNotEqual(0, potion.Amount);
             Assert.AreNotEqual(0, potion.iconName);
         }

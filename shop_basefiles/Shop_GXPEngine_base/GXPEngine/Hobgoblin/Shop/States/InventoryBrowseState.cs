@@ -32,6 +32,7 @@ namespace Hobgoblin.States
             _view.Subscribe(_model);
             AddChild(_view);
             Helper.AlignToCenter(_view, true, true);
+            _view.x = Globals.offsetX;
 
             _messageView = new InventoryMessageView();
             _messageView.Subscribe(_model);

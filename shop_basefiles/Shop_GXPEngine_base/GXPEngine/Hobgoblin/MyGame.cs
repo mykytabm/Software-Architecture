@@ -14,13 +14,13 @@ namespace Hobgoblin
     public class MyGame : Game
     {
         public Generator generator;
-        public static Actor Player;
+        public static Humanoid Player;
 
         private ShopBrowseState _shopBrowseState;
         private InventoryBrowseState _inventoryBrowseState;
 
         private CommandManager _commandManager;
-        private Actor _player;
+        private Humanoid _player;
         private Action _stepAction;
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -32,9 +32,10 @@ namespace Hobgoblin
 
             RegisterServices();
 
+            SetupCommands();
+
             CreateObjects();
 
-            SetupCommands();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -59,25 +60,20 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         private void CreateObjects()
         {
-            // ------------------------/ Item Generator /---------------------------
+            //                          Item Generator 
             generator = new Generator(new NormalItemFactory());
 
-            // ------------------------/ Item Lists /---------------------------
+            //                            Item Lists 
             var _shopItemList = generator.CreateRandomItems(10);
             var inventoryItemList = generator.CreateRandomItems(3);
 
 
-            // ------------------------/ Player Components /---------------------------
-            var playerInventory = new Inventory(inventoryItemList, 4, 100);
-            var playerEquipment = new Equipment(2);
 
-            // ------------------------/ Player /---------------------------
-            _player = new Humanoid();
+            //                             Player 
+            _player = new Humanoid(inventoryItemList, 4, 100, 2);
             Player = _player;
-            _player.AddComponent(playerInventory);
-            _player.AddComponent(playerEquipment);
 
-            // -----------------------/ Shop Browse State /---------------------------
+            //                        Shop Browse State 
             _shopBrowseState = new ShopBrowseState(_shopItemList, _player);
             AddChild(_shopBrowseState);
             _stepAction += _shopBrowseState.Step;
@@ -116,10 +112,7 @@ namespace Hobgoblin
             _inventoryBrowseState = new InventoryBrowseState(_player.GetComponent<Inventory>());
             AddChild(_inventoryBrowseState);
             _stepAction += _inventoryBrowseState.Step;
-            if (_shopBrowseState != null)
-            {
-                _shopBrowseState.DeregisterViewCommands();
-            }
+            UnsubscribeShop();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -129,9 +122,30 @@ namespace Hobgoblin
         {
             _inventoryBrowseState.LateDestroy();
             _stepAction -= _inventoryBrowseState.Step;
+            SubscribeShop();
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Subscribe Shop()
+        //------------------------------------------------------------------------------------------------------------------------        
+        private void SubscribeShop()
+        {
             if (_shopBrowseState != null)
             {
+                _stepAction += _shopBrowseState.Step;
                 _shopBrowseState.RegisterViewCommands();
+            }
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Unsubscribe Shop()
+        //------------------------------------------------------------------------------------------------------------------------        
+        private void UnsubscribeShop()
+        {
+            if (_shopBrowseState != null)
+            {
+                _stepAction -= _shopBrowseState.Step;
+                _shopBrowseState.DeregisterViewCommands();
             }
         }
 

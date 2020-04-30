@@ -9,7 +9,7 @@ namespace Hobgoblin.View
 {
     public class ItemInfoView : Canvas, IObserver<ShopData>
     {
-        private const int _offset = 10;
+        
 
         private const int _iconSize = 100;
 
@@ -20,7 +20,7 @@ namespace Hobgoblin.View
         private Texture2D _itemTexture;
         public ItemInfoView() : base(210, 340)
         {
-            x += _offset;
+            x += Globals.offsetX;
             y = (game.height - height) / 2;
             _itemIconX = (width - _iconSize) / 2;
             _itemIconY = 20;
@@ -48,9 +48,9 @@ namespace Hobgoblin.View
         {
             if (_item == null) return;
             graphics.DrawImage(_itemTexture.bitmap, _itemIconX, _itemIconY, _iconSize, _iconSize);
-            graphics.DrawString($"{_item.name}", SystemFonts.CaptionFont, Brushes.White, _offset, 120);
-            graphics.DrawString($"Amount: {_item.Amount}", SystemFonts.CaptionFont, Brushes.White, _offset, 140);
-            graphics.DrawString($"price:{_item.price} gold", SystemFonts.CaptionFont, Brushes.White, _offset, 260);
+            graphics.DrawString($"{_item.name}", SystemFonts.CaptionFont, Brushes.White, Globals.offsetX, 120);
+            graphics.DrawString($"Amount: {_item.Amount}", SystemFonts.CaptionFont, Brushes.White, Globals.offsetX, 140);
+            graphics.DrawString($"price:{_item.price} gold", SystemFonts.CaptionFont, Brushes.White, Globals.offsetX, 260);
         }
 
         public void Subscribe(ShopModel pProvider)

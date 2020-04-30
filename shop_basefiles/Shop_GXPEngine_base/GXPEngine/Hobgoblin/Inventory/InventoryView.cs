@@ -27,7 +27,7 @@ namespace Hobgoblin.InventoryMvc
         private InventoryController _controller;
         private CommandManager _commandManager;
 
-        public InventoryView(InventoryController pController) : base(340, 340)
+        public InventoryView(InventoryController pController) : base(600, 340)
         {
             _controller = pController;
             _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
@@ -40,6 +40,7 @@ namespace Hobgoblin.InventoryMvc
             var moveSelectionUp = new MoveInventorySelectionCommand(_controller, this, 0, -1);
             var moveSelectionDown = new MoveInventorySelectionCommand(_controller, this, 0, 1);
             var equipItem = new EquipItemCommand(MyGame.Player, _controller);
+            var drinkItem = new DrinkItemCommand(MyGame.Player, _controller);
 
 
             //-------------------------- Add Commands to list ------------------------------//
@@ -49,7 +50,8 @@ namespace Hobgoblin.InventoryMvc
                 new KeyCommand(Key.RIGHT, moveSelectionRight),
                 new KeyCommand(Key.UP, moveSelectionUp),
                 new KeyCommand(Key.DOWN, moveSelectionDown),
-                new KeyCommand(Key.E,equipItem)
+                new KeyCommand(Key.E,equipItem),
+                new KeyCommand(Key.Q,drinkItem)
         };
 
             RegisterCommands();
@@ -162,7 +164,7 @@ namespace Hobgoblin.InventoryMvc
         //------------------------------------------------------------------------------------------------------------------------        
         private void DrawBackground()
         {
-            graphics.Clear(Color.DarkOliveGreen);
+            graphics.Clear(Color.MidnightBlue);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

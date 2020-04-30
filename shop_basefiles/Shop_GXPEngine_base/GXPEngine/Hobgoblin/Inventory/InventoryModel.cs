@@ -26,7 +26,16 @@ namespace Hobgoblin.InventoryMvc
             _data = new InventoryData();
             UpdateData();
         }
-
+        public void RemoveCurrentItem()
+        {
+            _items.RemoveAt(_selectedItemIndex);
+            if (_selectedItemIndex > _items.Count - 1)
+            {
+                _selectedItemIndex = _items.Count - 1;
+            }
+            UpdateData();
+            NotifyObservers();
+        }
         public List<Item> GetItems()
         {
             return HUtils.DeepCopyList(_items);
