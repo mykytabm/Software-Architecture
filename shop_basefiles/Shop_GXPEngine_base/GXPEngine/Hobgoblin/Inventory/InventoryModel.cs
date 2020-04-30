@@ -152,13 +152,12 @@ namespace Hobgoblin.InventoryMvc
 
         private List<string> DeepCopyMessages()
         {
-            //var deepCopyList = new List<string>();
-            //foreach (var msg in _messages)
-            //{
-            //    deepCopyList.Add((string)msg.Clone());
-            //}
-            //return deepCopyList;
-            return _messages;
+            var deepCopyList = new List<string>();
+            foreach (var msg in _messages)
+            {
+                deepCopyList.Add((string)msg.Clone());
+            }
+            return deepCopyList;
         }
 
         public void UpdateData()
