@@ -15,7 +15,7 @@ namespace Hobgoblin.Commands.PlayerCommands
         {
             if (_game != null)
             {
-                _game.ToggleShop();
+
             }
         }
     }

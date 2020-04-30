@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using GXPEngine;
     using Hobgoblin.Utils;
 
     public class ShopModel : IObservable<ShopData>
@@ -164,7 +163,7 @@
                 AddMessage($" It was the last {selectedItem.name} in the shop! come back later for more.");
                 AddMessage(" If you are not scared of goblins or course, ha-ha!");
                 _items.Remove(selectedItem);
-                _selectedItemIndex = (int)Mathf.Clamp(_selectedItemIndex, 0, _items.Count - 1);
+                _selectedItemIndex = _selectedItemIndex > _items.Count - 1 ? _items.Count - 1 : _selectedItemIndex;
             }
             UpdateShopData();
             NotifyObservers();

@@ -56,5 +56,15 @@ namespace Hobgoblin.States
             _itemInfoView.Step();
         }
 
+        public void DeregisterViewCommands()
+        {
+            _shopView.DeregisterCommands();
+        }
+
+        public void RegisterViewCommands()
+        {
+            _shopView.RegisterCommands();
+        }
+
     }
 }

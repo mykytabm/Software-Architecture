@@ -13,7 +13,6 @@ namespace Hobgoblin
 {
     public class MyGame : Game
     {
-
         public Generator generator;
         public static Actor Player;
 
@@ -22,9 +21,7 @@ namespace Hobgoblin
 
         private CommandManager _commandManager;
         private Actor _player;
-        private Action _updateAction;
-
-        private List<Item> _shopItems;
+        private Action _stepAction;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  MyGame()
@@ -32,11 +29,12 @@ namespace Hobgoblin
         public MyGame() : base(800, 600, false)
         {
             CreateServices();
+
             RegisterServices();
 
             CreateObjects();
 
-            Setup();
+            SetupCommands();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +43,7 @@ namespace Hobgoblin
         private void CreateServices()
         {
             _commandManager = new CommandManager();
-            _updateAction += _commandManager.Step;
+            _stepAction += _commandManager.Step;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -61,30 +59,43 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         private void CreateObjects()
         {
+            // ------------------------/ Item Generator /---------------------------
             generator = new Generator(new NormalItemFactory());
-            _shopItems = generator.CreateRandomItems(10);
-            var inventoryItems = generator.CreateRandomItems(3);
 
-            var playerInventory = new Inventory(inventoryItems, 4, 100);
+            // ------------------------/ Item Lists /---------------------------
+            var _shopItemList = generator.CreateRandomItems(10);
+            var inventoryItemList = generator.CreateRandomItems(3);
+
+
+            // ------------------------/ Player Components /---------------------------
+            var playerInventory = new Inventory(inventoryItemList, 4, 100);
             var playerEquipment = new Equipment(2);
+
+            // ------------------------/ Player /---------------------------
             _player = new Humanoid();
+            Player = _player;
             _player.AddComponent(playerInventory);
             _player.AddComponent(playerEquipment);
-            Player = _player;
+
+            // -----------------------/ Shop Browse State /---------------------------
+            _shopBrowseState = new ShopBrowseState(_shopItemList, _player);
+            AddChild(_shopBrowseState);
+            _stepAction += _shopBrowseState.Step;
+            _shopBrowseState.RegisterViewCommands();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
-        //                                                  Update()
+        //                                                  Setup Commands()
         //------------------------------------------------------------------------------------------------------------------------        
-        private void Setup()
+        private void SetupCommands()
         {
-            var toggleShop = new KeyCommand(Key.S, new ToggleShopCommand(this));
             var toggleInventory = new KeyCommand(Key.I, new ToggleInventoryCommand(this));
-
-            _commandManager.RegisterCommand(toggleShop);
             _commandManager.RegisterCommand(toggleInventory);
         }
 
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Toggle Inventory()
+        //------------------------------------------------------------------------------------------------------------------------        
         public void ToggleInventory()
         {
             if (HasChild(_inventoryBrowseState))
@@ -93,56 +104,35 @@ namespace Hobgoblin
             }
             else
             {
-                if (HasChild(_shopBrowseState))
-                {
-                    CloseShop();
-                }
                 OpenInventory();
             }
         }
 
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Open Inventory()
+        //------------------------------------------------------------------------------------------------------------------------        
         private void OpenInventory()
         {
             _inventoryBrowseState = new InventoryBrowseState(_player.GetComponent<Inventory>());
             AddChild(_inventoryBrowseState);
-            _updateAction += _inventoryBrowseState.Step;
+            _stepAction += _inventoryBrowseState.Step;
+            if (_shopBrowseState != null)
+            {
+                _shopBrowseState.DeregisterViewCommands();
+            }
         }
 
+        //------------------------------------------------------------------------------------------------------------------------
+        //                                                  Close Inventory()
+        //------------------------------------------------------------------------------------------------------------------------        
         private void CloseInventory()
         {
             _inventoryBrowseState.LateDestroy();
-            _updateAction -= _inventoryBrowseState.Step;
-        }
-
-        public void ToggleShop()
-        {
-            if (HasChild(_shopBrowseState))
+            _stepAction -= _inventoryBrowseState.Step;
+            if (_shopBrowseState != null)
             {
-
-                CloseShop();
+                _shopBrowseState.RegisterViewCommands();
             }
-            else
-            {
-                if (HasChild(_inventoryBrowseState))
-                {
-                    CloseInventory();
-                }
-
-                OpenShop();
-            }
-        }
-
-        private void OpenShop()
-        {
-            _shopBrowseState = new ShopBrowseState(_shopItems, _player);
-            AddChild(_shopBrowseState);
-            _updateAction += _shopBrowseState.Step;
-        }
-
-        private void CloseShop()
-        {
-            _shopBrowseState.LateDestroy();
-            _updateAction -= _shopBrowseState.Step;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +140,7 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         void Update()
         {
-            _updateAction();
+            _stepAction();
 
         }
 
