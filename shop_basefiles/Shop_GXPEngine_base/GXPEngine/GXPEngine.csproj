@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B5126D4C-7FE0-4552-BC8C-E68D529C22B2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GXPEngine</RootNamespace>
+    <AssemblyName>GXPEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- GXPEngine -->
+    <Compile Include="GXPEngine\Canvas.cs" />
+    <Compile Include="GXPEngine\Game.cs" />
+    <Compile Include="GXPEngine\GameObject.cs" />
+    <Compile Include="GXPEngine\Sound.cs" />
+    <Compile Include="GXPEngine\SoundChannel.cs" />
+    <Compile Include="GXPEngine\Sprite.cs" />
+    <Compile Include="GXPEngine\Core\BlendMode.cs" />
+    <Compile Include="GXPEngine\Core\BoxCollider.cs" />
+    <Compile Include="GXPEngine\Core\Collider.cs" />
+    <Compile Include="GXPEngine\Core\GLContext.cs" />
+    <Compile Include="GXPEngine\Core\Rectangle.cs" />
+    <Compile Include="GXPEngine\Core\Texture2D.cs" />
+    <Compile Include="GXPEngine\Core\Transformable.cs" />
+    <Compile Include="GXPEngine\Core\Vector2.cs" />
+    <Compile Include="GXPEngine\FMOD\FMOD.cs" />
+    <Compile Include="GXPEngine\Managers\CollisionManager.cs" />
+    <Compile Include="GXPEngine\Managers\UpdateManager.cs" />
+    <Compile Include="GXPEngine\OpenGL\GL.cs" />
+    <Compile Include="GXPEngine\Pivot.cs" />
+    <Compile Include="GXPEngine\AnimationSprite.cs" />
+    <Compile Include="GXPEngine\Mathf.cs" />
+    <Compile Include="GXPEngine\Utils\Input.cs" />
+    <Compile Include="GXPEngine\Utils\Key.cs" />
+    <Compile Include="GXPEngine\Utils\MouseHandler.cs" />
+    <Compile Include="GXPEngine\Utils\Time.cs" />
+    <Compile Include="GXPEngine\Utils\Utils.cs" />
+    <Compile Include="GXPEngine\AddOns\Camera.cs" />
+    <Compile Include="GXPEngine\AddOns\HierarchyManager.cs" />
+    <Compile Include="GXPEngine\AddOns\Settings.cs" />
+    <Compile Include="GXPEngine\AddOns\TiledMapParser.cs" />
+    <Compile Include="GXPEngine\AddOns\Window.cs" />
+    <Compile Include="GXPEngine\AddOns\EasyDraw.cs" />
+    <Compile Include="GXPEngine\Core\Collision.cs" />
+    <!-- Inventory Commands -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\InventoryCommands\DrinkItemCommand.cs">
+      <Link>Hobgoblin\Commands\InventoryCommands\DrinkItemCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\InventoryCommands\EquipItemCommand.cs">
+      <Link>Hobgoblin\Commands\InventoryCommands\EquipItemCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\InventoryCommands\SellItemCommand.cs">
+      <Link>Hobgoblin\Commands\InventoryCommands\SellItemCommand.cs</Link>
+    </Compile>
+    <!-- Player Commands -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\PlayerCommands\ToggleInventoryCommand.cs">
+      <Link>Hobgoblin\Commands\PlayerCommands\ToggleInventoryCommand.cs</Link>
+    </Compile>
+    <!-- Shop Commands -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\ShopCommands\BuyItemCommand.cs">
+      <Link>Hobgoblin\Commands\ShopCommands\BuyItemCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\ShopCommands\TestCommand.cs">
+      <Link>Hobgoblin\Commands\ShopCommands\TestCommand.cs</Link>
+    </Compile>
+    <!-- Сomponents -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Components\Attackable.cs">
+      <Link>Hobgoblin\Components\Attackable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Components\Drinkable.cs">
+      <Link>Hobgoblin\Components\Drinkable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Components\Equipable.cs">
+      <Link>Hobgoblin\Components\Equipable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Components\Equipment.cs">
+      <Link>Hobgoblin\Components\Equipment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Components\Inventory.cs">
+      <Link>Hobgoblin\Components\Inventory.cs</Link>
+    </Compile>
+    <!-- Core-->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\Actor.cs">
+      <Link>Hobgoblin\Core\Actor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\CommandManager.cs">
+      <Link>Hobgoblin\Core\CommandManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\Component.cs">
+      <Link>Hobgoblin\Core\Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\EquipmentSlot.cs">
+      <Link>Hobgoblin\Core\EquipmentSlot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\Generator.cs">
+      <Link>Hobgoblin\Core\Generator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\HGameObject.cs">
+      <Link>Hobgoblin\Core\HGameObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\Humanoid.cs">
+      <Link>Hobgoblin\Core\Humanoid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\NormalItemFactory.cs">
+      <Link>Hobgoblin\Core\NormalItemFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\ServiceLocator.cs">
+      <Link>Hobgoblin\Core\ServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Core\Singleton.cs">
+      <Link>Hobgoblin\Core\Singleton.cs</Link>
+    </Compile>
+    <!-- Enums -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Enums\EEffect.cs">
+      <Link>Hobgoblin\Enums\EEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Enums\EEquipmentSlot.cs">
+      <Link>Hobgoblin\Enums\EEquipmentSlot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Enums\ERarity.cs">
+      <Link>Hobgoblin\Enums\ERarity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Enums\EWeapon.cs">
+      <Link>Hobgoblin\Enums\EWeapon.cs</Link>
+    </Compile>
+    <!-- Globals -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Globals.cs">
+      <Link>Hobgoblin\Globals.cs</Link>
+    </Compile>
+    <!-- Interfaces -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Interfaces\ICommand.cs">
+      <Link>Hobgoblin\Interfaces\ICommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Interfaces\IItemFactory.cs">
+      <Link>Hobgoblin\Interfaces\IItemFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Interfaces\IPrototype.cs">
+      <Link>Hobgoblin\Interfaces\IPrototype.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Interfaces\IService.cs">
+      <Link>Hobgoblin\Interfaces\IService.cs</Link>
+    </Compile>
+
+    <!-- Inventory -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Inventory\InventoryController.cs">
+      <Link>Hobgoblin\Inventory\InventoryController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Inventory\InventoryData.cs">
+      <Link>Hobgoblin\Inventory\InventoryData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Inventory\InventoryModel.cs">
+      <Link>Hobgoblin\Inventory\InventoryModel.cs</Link>
+    </Compile>
+    <!-- Utils -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Utils\HUtils.cs">
+      <Link>Hobgoblin\Utils\HUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Utils\ShopData.cs">
+      <Link>Hobgoblin\Utils\ShopData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Utils\Unsubscriber.cs">
+      <Link>Hobgoblin\Utils\Unsubscriber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Utils\KeyCommand.cs">
+      <Link>Hobgoblin\Utils\Unsubscriber.cs</Link>
+    </Compile>
+    <!-- Shop MVC -->
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Shop\Controller\ShopController.cs">
+      <Link>Hobgoblin\Shop\Controller\ShopController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Shop\Model\Item.cs">
+      <Link>Hobgoblin\Shop\Model\Item.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Shop\Model\ShopModel.cs">
+      <Link>Hobgoblin\Shop\Model\ShopModel.cs</Link>
+    </Compile>
+
+    <!-- Project specific classes -->
+    <Compile Include="Hobgoblin\Shop\States\ShopBrowseState.cs" />
+    <Compile Include="Hobgoblin\Shop\View\Helper.cs" />
+    <Compile Include="Hobgoblin\Shop\View\ShopMessageView.cs" />
+    <Compile Include="Hobgoblin\Shop\View\ShopView.cs" />
+    <Compile Include="Hobgoblin\UnitTests\NormalFactoryTest.cs" />
+    <Compile Include="Hobgoblin\MyGame.cs" />
+    <Compile Include="Hobgoblin\Inventory\InventoryView.cs" />
+    <Compile Include="Hobgoblin\Shop\View\ItemInfoView.cs" />
+    <Compile Include="Hobgoblin\Shop\View\MoveSelectionCommand.cs" />
+    <Compile Include="Hobgoblin\Shop\States\InventoryBrowseState.cs" />
+    <Compile Include="Hobgoblin\Inventory\InventoryMessageView.cs" />
+    <Compile Include="Hobgoblin\Inventory\MoveInventorySelectionCommand.cs" />
+    <Compile Include="Hobgoblin\Utils\IconCache.cs" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GXPEngine\" />
+    <Folder Include="GXPEngine\AddOns\" />
+    <Folder Include="Hobgoblin\" />
+    <Folder Include="Hobgoblin\Commands\" />
+    <Folder Include="Hobgoblin\Components\" />
+    <Folder Include="Hobgoblin\Core\" />
+    <Folder Include="Hobgoblin\Enums\" />
+    <Folder Include="Hobgoblin\Interfaces\" />
+    <Folder Include="Hobgoblin\Shop\" />
+    <Folder Include="Hobgoblin\UnitTests\" />
+    <Folder Include="Hobgoblin\Utils\" />
+    <Folder Include="Hobgoblin\Inventory\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
