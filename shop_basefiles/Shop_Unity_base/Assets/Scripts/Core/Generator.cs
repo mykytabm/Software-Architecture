@@ -33,9 +33,9 @@ namespace Hobgoblin.Core
             switch (itemType)
             {
                 case 1:
-                    return _factory.CreatePotion(Globals.PotionMaxAmount);
+                    return _factory.CreatePotion(Globals.potionMaxAmount);
                 case 2:
-                    return _factory.CreateWeapon(Globals.WeaponMaxAmount);
+                    return _factory.CreateWeapon(Globals.weaponMaxAmount);
             }
             return null;
         }

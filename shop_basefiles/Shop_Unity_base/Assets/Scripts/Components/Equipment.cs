@@ -45,12 +45,10 @@ namespace Hobgoblin.Components
             var equipable = pItem.GetComponent<Equipable>();
             if (equipable != null)
             {
-                var inventory = _owner.GetComponent<Inventory>();
                 foreach (var equipmentSlot in _body)
                 {
                     if (equipmentSlot.slot == equipable.slot)
                     {
-                        inventory.AddItem(equipmentSlot.item);
                         equipmentSlot.item = pItem;
                         return true;
                     }

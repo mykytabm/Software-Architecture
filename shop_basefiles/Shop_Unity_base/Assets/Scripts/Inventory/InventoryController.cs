@@ -22,6 +22,14 @@ namespace Hobgoblin.InventoryMvc
             }
         }
 
+        public void RemoveCurrentItem()
+        {
+            _model.RemoveCurrentItem();
+        }
+        public void AddGold(int pGold)
+        {
+            _model.AddGold(pGold);
+        }
         public Item GetSelectedItem()
         {
             return _model.GetSelectedItem();

@@ -15,7 +15,7 @@ namespace Hobgoblin.Core
             var amount = Globals.random.Next(1, pMaxAmount + 1); // Random.Next(inclusive min, exclusive max)
             var type = HUtils.RandomEnumValue<EEffect>(Globals.random);
             var potion = new Item($"Potion of {type}", "potion", amount);
-            var drinkableComponent = new Drinkable(new List<EEffect>() { type }, 10);
+            var drinkableComponent = new Drinkable(type, 10);
             potion.AddComponent(drinkableComponent);
 
             return potion;
