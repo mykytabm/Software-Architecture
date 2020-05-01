@@ -1,36 +1,35 @@
-﻿namespace Model
+﻿namespace Hobgoblin.Model
 {
     using System;
     using System.Collections.Generic;
+    using Hobgoblin.Utils;
 
-    //This class holds the model of our Shop. It contains an ItemList. In its current setup, view and controller need to get
-    //data via polling. Advisable is, to set up an event system for better integration with View and Controller.
-    public class ShopModel
+    public class ShopModel : IObservable<ShopData>
     {
-        const int MaxMessageQueueCount = 4; //it caches the last four messages
-        private List<string> messages = new List<string>();
+        private List<IObserver<ShopData>> _observers;
+        private ShopData _data;
 
-        private List<Item> itemList = new List<Item>(); //items in the store
-        private int selectedItemIndex = 0; //selected item index
+        private const int MaxMessageQueueCount = 4; //it caches the last four messages
+        private List<string> _messages = new List<string>();
+
+        private List<Item> _items; //items in the store
+        private int _selectedItemIndex = 0; //selected item index
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  ShopModel()
         //------------------------------------------------------------------------------------------------------------------------        
-        public ShopModel()
+        public ShopModel(List<Item> pItems)
         {
-            PopulateInventory(16); //currently, it has 16 items
-        }
+            _observers = new List<IObserver<ShopData>>();
 
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  PopulateInventory()
-        //------------------------------------------------------------------------------------------------------------------------        
-        private void PopulateInventory(int itemCount)
-        {
-            for (int index = 0; index < itemCount; index++)
-            {
-                Item item = new Item("item", "item", 10); //item name, item icon, cost
-                itemList.Add(item);
-            }
+            _items = pItems;
+
+            _data = new ShopData();
+            AddMessage(" You enter the shop. You see hobgoblin behind the wooden counter.");
+            AddMessage(" He looks and you and shows you his scary teeth. You guess this is how he is smiling.");
+
+            UpdateShopData();
+
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -39,9 +38,9 @@
         //returns the selected item
         public Item GetSelectedItem()
         {
-            if (selectedItemIndex >= 0 && selectedItemIndex < itemList.Count)
+            if (_selectedItemIndex >= 0 && _selectedItemIndex < _items.Count)
             {
-                return itemList[selectedItemIndex];
+                return _items[_selectedItemIndex];
             }
             else
             {
@@ -57,10 +56,12 @@
         {
             if (item != null)
             {
-                int index = itemList.IndexOf(item);
+                int index = _items.IndexOf(item);
                 if (index >= 0)
                 {
-                    selectedItemIndex = index;
+                    _selectedItemIndex = index;
+                    UpdateShopData();
+                    NotifyObservers();
                 }
             }
         }
@@ -71,9 +72,11 @@
         //attempts to select the item, specified by 'index', fails silently
         public void SelectItemByIndex(int index)
         {
-            if (index >= 0 && index < itemList.Count)
+            if (index >= 0 && index < _items.Count)
             {
-                selectedItemIndex = index;
+                _selectedItemIndex = index;
+                UpdateShopData();
+                NotifyObservers();
             }
         }
 
@@ -83,28 +86,24 @@
         //returns the index of the current selected item
         public int GetSelectedItemIndex()
         {
-            return selectedItemIndex;
+            return _selectedItemIndex;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItems()
         //------------------------------------------------------------------------------------------------------------------------        
-        //returns a list with all current items in the shop.
+        //returns a deepcopied list with all current items in the shop.
         public List<Item> GetItems()
         {
-            return new List<Item>(itemList); //returns a copy of the list, so the original is kept intact, 
-                                             //however this is shallow copy of the original list, so changes in 
-                                             //the original list will likely influence the copy, apply 
-                                             //creational patterns like prototype to fix this. 
+            return HUtils.DeepCopyList(_items);
         }
-
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  GetItemCount()
         //------------------------------------------------------------------------------------------------------------------------        
         //returns the number of items
-        public int GetItemCount()
+        private int GetItemCount()
         {
-            return itemList.Count;
+            return _items.Count;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -113,9 +112,9 @@
         //tries to get an item, specified by index. returns null if unsuccessful
         public Item GetItemByIndex(int index)
         {
-            if (index >= 0 && index < itemList.Count)
+            if (index >= 0 && index < _items.Count)
             {
-                return itemList[index];
+                return _items[index];
             }
             else
             {
@@ -129,39 +128,120 @@
         //returns the cached list of messages
         public string[] GetMessages()
         {
-            return messages.ToArray();
+            return _messages.ToArray();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  AddMessage()
         //------------------------------------------------------------------------------------------------------------------------
         //adds a message to the cache, cleaning it up if the limit is exceeded
-        private void AddMessage(string message)
+        public void AddMessage(string message)
         {
-            messages.Add(message);
-            while (messages.Count > MaxMessageQueueCount)
+            _messages.Add(message);
+            while (_messages.Count > MaxMessageQueueCount)
             {
-                messages.RemoveAt(0);
+                _messages.RemoveAt(0);
             }
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
-        //not implemented yet
-        public void Buy()
+        //not implemented yet TODO
+        public Item SellItem()
         {
-            AddMessage("You can't buy this item yet!");
+            Item selectedItem = GetSelectedItem();
+            if (selectedItem == null)
+            {
+                AddMessage(" You can't buy this item! Come back with more gold or give me your laptop!");
+                return null;
+            }
+            selectedItem.Amount--;
+            AddMessage($" Whispering something rude in orc, Hobgoblin sells you {selectedItem.name} for {selectedItem.price} gold.");
+            if (selectedItem.Amount <= 0)
+            {
+                AddMessage($" It was the last {selectedItem.name} in the shop! come back later for more.");
+                AddMessage(" If you are not scared of goblins or course, ha-ha!");
+                _items.Remove(selectedItem);
+                _selectedItemIndex = _selectedItemIndex > _items.Count - 1 ? _items.Count - 1 : _selectedItemIndex;
+            }
+            UpdateShopData();
+            NotifyObservers();
+            var item = (Item)selectedItem.Clone();
+            item.Amount = 1;
+
+            return item;
         }
+
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Sell()
         //------------------------------------------------------------------------------------------------------------------------        
-        //not implemented yet
         public void Sell()
         {
-            AddMessage("You can't sell this item yet!");
+            if (GetSelectedItem() != null)
+            {
+                GetSelectedItem().Amount++;
+                UpdateShopData();
+                NotifyObservers();
+            }
         }
 
+        public int BuyItem(Item pItem)
+        {
+            var itemGold = pItem.price;
+            _items.Add(pItem);
+            return itemGold;
+        }
+
+        public void UpdateShopData()
+        {
+            _data.items = _items;
+            _data.itemCount = _items.Count;
+            if (_items.Count > 0)
+            {
+                _data.selectedItemIndex = _selectedItemIndex;
+                _data.selectedItem = (Item)_items[_selectedItemIndex].Clone();
+            }
+            else
+            {
+                _data.selectedItemIndex = 0;
+                _data.selectedItem = null;
+                AddMessage("There are no items in the shop, come back later");
+            }
+
+            _data.messages = DeepCopyMessages();
+
+        }
+
+        private List<string> DeepCopyMessages()
+        {
+            var deepCopyList = new List<string>();
+            foreach (var msg in _messages)
+            {
+                deepCopyList.Add((string)msg.Clone());
+            }
+            return deepCopyList;
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(_data);
+            }
+        }
+
+        public IDisposable Subscribe(IObserver<ShopData> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+                // Provide observer with existing data.
+                observer.OnNext(_data);
+            }
+            return new Unsubscriber<ShopData>(_observers, observer);
+        }
     }
 }

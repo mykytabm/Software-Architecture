@@ -1,22 +1,20 @@
-﻿namespace Controller
+﻿namespace Hobgoblin.Controller
 {
     using System;
-    using Model;
+    using Core;
+    using Hobgoblin.Model;
 
-    //This class provides a controller for a ShopModel. The Controller acts as a public interface for a ShopModel.
-    //These methods are being called by ShopView, as it implements the user interface. The exception is Initialize(),
-    //it is being called by ShopState. We use Initialize() as a replacement for the constructor, as this class is a MonoBehaviour.
+
     public class ShopController
     {
-        private ShopModel shopModel;
-
+        private ShopModel _shopModel;
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Initialize()
         //------------------------------------------------------------------------------------------------------------------------        
         //Ties this controller to a model
         public ShopController(ShopModel shopModel)
         {
-            this.shopModel = shopModel;
+            this._shopModel = shopModel;
             Browse();
         }
 
@@ -24,36 +22,64 @@
         //                                                  SelectItem()
         //------------------------------------------------------------------------------------------------------------------------
         //attempt to select an item
-        public void SelectItem(Item item)
+        public void SelectItem(Item pItem)
         {
-            if (item != null)
+            if (pItem != null)
             {
-                shopModel.SelectItem(item);
+                _shopModel.SelectItem(pItem);
             }
+        }
+
+        public void AddMessage(string pMessage)
+        {
+            _shopModel.AddMessage(pMessage);
+            UpdateShopData();
+            UpdateView();
+        }
+
+        private void UpdateShopData()
+        {
+            _shopModel.UpdateShopData();
+        }
+
+        private void UpdateView()
+        {
+            _shopModel.NotifyObservers();
+        }
+
+        public int GetItemPrice()
+        {
+            return _shopModel.GetSelectedItem().price;
+        }
+
+        public void SelectItem(int pIndex)
+        {
+            _shopModel.SelectItemByIndex(pIndex);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Browse()
         //------------------------------------------------------------------------------------------------------------------------
-        public void Browse() {
-            shopModel.SelectItemByIndex(0); //right now all this function does is select the first item in shopModel.
+        public void Browse()
+        {
+            _shopModel.SelectItemByIndex(0);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Buy()
         //------------------------------------------------------------------------------------------------------------------------        
-        public void Buy()
+        public Item SellItem()
         {
-            shopModel.Buy();
+            return _shopModel.SellItem();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Sell()
         //------------------------------------------------------------------------------------------------------------------------        
-        public void Sell()
+       
+        public int BuyItem(Item pItem)
         {
-            shopModel.Sell();
+            return _shopModel.BuyItem(pItem);
         }
-
     }
 }
