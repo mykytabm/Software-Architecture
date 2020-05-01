@@ -1,2 +1,2 @@
 # Software-Architecture
-God save the Queen
+ generic shop using MVC pattern, inventory system and item system
