@@ -24,8 +24,8 @@ namespace Hobgoblin.ShopCommands
 
         public void Execute()
         {
-            //var newSelectedItemId = _shopView.GetNewSelectedItemId(_newX, _newY);
-            //_shopController.SelectItem(newSelectedItemId);
+            var newSelectedItemId = _shopView.GetNewSelectedItemId(_newX, _newY);
+            _shopController.SelectItem(newSelectedItemId);
         }
     }
 }

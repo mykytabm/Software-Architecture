@@ -8,7 +8,7 @@ namespace Hobgoblin.Core
         protected HGameObject _owner = null;
         public HGameObject Owner { get { return _owner; } }
 
-        public IPrototype Clone()
+        public virtual IPrototype Clone()
         {
             throw new NotImplementedException();
         }

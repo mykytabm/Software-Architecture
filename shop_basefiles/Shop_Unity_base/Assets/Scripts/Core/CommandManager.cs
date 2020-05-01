@@ -1,22 +1,41 @@
 ﻿using System;
 using Hobgoblin.Interfaces;
+using GXPEngine;
 using System.Collections.Generic;
 using Hobgoblin.Utils;
-using UnityEngine;
-
 namespace Hobgoblin.Core
 {
     public class CommandManager : IService
     {
         private List<KeyCommand> _keyCommands = new List<KeyCommand>();
 
-
+        public void RegisterCommand(Key pKey, ICommand pCommand)
+        {
+            //if (_keyCommands.ContainsKey(pKey))
+            //{
+            //    if (!ContainsCommand(pKey, pCommand) && _keyCommands[pKey].Count <= Globals.maxCommandsPerKey)
+            //    {
+            //        _keyCommands[pKey].Add(pCommand);
+            //    }
+            //}
+            //else
+            //{
+            //    _keyCommands.Add(pKey, new List<ICommand>(Globals.maxCommandsPerKey) { pCommand });
+            //}
+        }
         public void RegisterCommand(KeyCommand pCommand)
         {
-            _keyCommands.Add(pCommand);
+            //if (_keyCommands.Exists(c => c == pCommand))
+            //{
+
+            //}
+            //else
+            //{
+                _keyCommands.Add(pCommand);
+            //}
         }
 
-        public bool DeregisterCommand(KeyCode pKey, ICommand pCommand)
+        public bool DeregisterCommand(Key pKey, ICommand pCommand)
         {
             //if (_keyCommands.ContainsKey(pKey))
             //{
@@ -47,7 +66,7 @@ namespace Hobgoblin.Core
         {
             for (int i = _keyCommands.Count - 1; i >= 0; i--)
             {
-                if (Input.GetKeyDown(_keyCommands[i].key))
+                if (Input.GetKeyDown((int)_keyCommands[i].key))
                 {
                     _keyCommands[i].command.Execute();
                 }

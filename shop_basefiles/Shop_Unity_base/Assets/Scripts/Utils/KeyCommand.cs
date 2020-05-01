@@ -1,14 +1,14 @@
 ﻿using System;
+using GXPEngine;
 using Hobgoblin.Interfaces;
-using UnityEngine;
 namespace Hobgoblin.Utils
 {
     public class KeyCommand
     {
         public readonly ICommand command;
-        public readonly KeyCode key;
+        public readonly Key key;
 
-        public KeyCommand(KeyCode pKey, ICommand pCommand)
+        public KeyCommand(Key pKey, ICommand pCommand)
         {
             key = pKey;
             command = pCommand;

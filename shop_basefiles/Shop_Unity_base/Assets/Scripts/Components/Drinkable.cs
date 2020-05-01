@@ -9,25 +9,21 @@ namespace Hobgoblin.Components
 
     public class Drinkable : Component, IPrototype
     {
-        public readonly List<EEffect> effects;
+        public readonly EEffect effect;
         public readonly int duration;
-        public Drinkable(List<EEffect> pEffects, int pDuration)
+        public Drinkable(EEffect Peffect, int pDuration)
         {
-            effects = pEffects;
+            effect = Peffect;
             duration = pDuration;
         }
 
         public IPrototype Clone()
         {
-            return new Drinkable(effects, duration);
+            return new Drinkable(effect, duration);
         }
 
-        public void Use(Actor pActor)
+        public void Use(Humanoid pHumanoid)
         {
-            foreach (var effect in effects)
-            {
-                pActor.ApplyEffect(effect, duration);
-            }
         }
     }
 }

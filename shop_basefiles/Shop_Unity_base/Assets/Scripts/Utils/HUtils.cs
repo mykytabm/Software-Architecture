@@ -11,7 +11,7 @@ namespace Hobgoblin.Utils
             var v = Enum.GetValues(typeof(T));
             return (T)v.GetValue(pRandom.Next(1, v.Length));
         }
-        public static List<T> DeepCopyList<T>(List<T> pList) where T:IPrototype
+        public static List<T> DeepCopyList<T>(List<T> pList) where T : IPrototype
         {
             var deepCopyList = new List<T>();
             foreach (var item in pList)
