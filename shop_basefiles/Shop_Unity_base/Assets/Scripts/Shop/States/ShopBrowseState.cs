@@ -51,7 +51,9 @@ namespace Hobgoblin.States
             //setup model and controller
 
             //link them
-            shopView.Initialize( shopController);//view1
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            Humanoid playerHumanoid = player.GetComponent<Player>().GetHumanoid();
+            shopView.Initialize(shopController, playerHumanoid);//view1
             shopMessageView.Initialize(shopModel);//view2
         }
 

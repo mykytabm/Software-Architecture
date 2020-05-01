@@ -71,7 +71,7 @@ namespace Hobgoblin.Components
             return _items.Exists(item => item == pItem);
         }
 
-        public IPrototype Clone()
+        public override IPrototype Clone()
         {
             var deepCopyItemList = HUtils.DeepCopyList(_items);
             return new Inventory(deepCopyItemList, deepCopyItemList.Capacity - deepCopyItemList.Count, _gold);

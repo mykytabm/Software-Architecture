@@ -9,6 +9,8 @@
     using Hobgoblin.Controller;
     using Hobgoblin.Utils;
     using System;
+    using Hobgoblin.Core;
+    using Hobgoblin.ShopCommands;
 
     //------------------------------------------------------------------------------------------------------------------------
     //                                                  ShopController()
@@ -16,32 +18,38 @@
     public class ShopView : MonoBehaviour, IObserver<ShopData>
     {
         [SerializeField]
-        private LayoutGroup itemLayoutGroup;
+        private LayoutGroup _itemLayoutGroup;
 
         [SerializeField]
-        private GameObject itemPrefab;
+        private GameObject _itemPrefab;
 
         [SerializeField]
-        private Button buyButton;
+        private Button _buyButton;
 
         [SerializeField]
-        private Button sellButton;
+        private Button _sellButton;
+
+        private Humanoid _customer;
 
         private ShopController _shopController;
 
         private List<Item> _items = new List<Item>();
         private int _selectedItemId = 0;
 
+        private CommandManager _commandManager;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Initialize()
         //------------------------------------------------------------------------------------------------------------------------        
         //this method is used to initialize the view, as we can't use a constructor (monobehaviour)
-        public void Initialize(ShopController pShopController)
+        public void Initialize(ShopController pShopController, Humanoid pCustomer)
         {
             _shopController = pShopController;
             RepopulateItemIconView(); //we need an Event system instead of this
             InitializeButtons();
+            _customer = pCustomer;
+            _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
+
         }
         public void Subscribe(ShopModel pModel)
         {
@@ -75,10 +83,10 @@
         //remove all existing icons in the gridview
         private void ClearIconView()
         {
-            Transform[] allIcons = itemLayoutGroup.transform.GetComponentsInChildren<Transform>();
+            Transform[] allIcons = _itemLayoutGroup.transform.GetComponentsInChildren<Transform>();
             foreach (Transform child in allIcons)
             {
-                if (child != itemLayoutGroup.transform)
+                if (child != _itemLayoutGroup.transform)
                 {
                     Destroy(child.gameObject);
                 }
@@ -91,8 +99,8 @@
         //Adds a new icon. An icon is a prefab Button with some additional scripts to link it to the store Item
         private void AddItemToView(Item item)
         {
-            GameObject newItemIcon = GameObject.Instantiate(itemPrefab);
-            newItemIcon.transform.SetParent(itemLayoutGroup.transform);
+            GameObject newItemIcon = GameObject.Instantiate(_itemPrefab);
+            newItemIcon.transform.SetParent(_itemLayoutGroup.transform);
             newItemIcon.transform.localScale = Vector3.one;//The scale would automatically change in Unity so we set it back to Vector3.one.
 
             ItemContainer itemContainer = newItemIcon.GetComponent<ItemContainer>();
@@ -117,18 +125,11 @@
         //This method adds a listener to the 'Buy' and 'Sell' button. They are forwarded to the controller to the shop.
         private void InitializeButtons()
         {
-            buyButton.onClick.AddListener(
+            _buyButton.onClick.AddListener(
                 delegate
                 {
-                    //shopController.BuyItem();
-                    RepopulateItemIconView(); //we need an Event system instead of this
-                }
-            );
-            sellButton.onClick.AddListener(
-                delegate
-                {
-                    //shopController.Sell();
-                    RepopulateItemIconView(); //we need an Event system instead of this
+                    _commandManager.ExecuteCommand(new BuyItemCommand(_shopController, _customer));
+                    
                 }
             );
         }
@@ -145,6 +146,7 @@
         {
             _items = pData.items;
             _selectedItemId = pData.selectedItemIndex;
+            RepopulateItemIconView();
         }
     }
 }

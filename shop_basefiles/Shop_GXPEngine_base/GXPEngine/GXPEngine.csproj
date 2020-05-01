@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <PropertyGroup>
@@ -85,10 +86,6 @@
     </Compile>
     <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\InventoryCommands\SellItemCommand.cs">
       <Link>Hobgoblin\Commands\InventoryCommands\SellItemCommand.cs</Link>
-    </Compile>
-    <!-- Player Commands -->
-    <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\PlayerCommands\ToggleInventoryCommand.cs">
-      <Link>Hobgoblin\Commands\PlayerCommands\ToggleInventoryCommand.cs</Link>
     </Compile>
     <!-- Shop Commands -->
     <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Commands\ShopCommands\BuyItemCommand.cs">
@@ -196,7 +193,7 @@
       <Link>Hobgoblin\Utils\Unsubscriber.cs</Link>
     </Compile>
     <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Utils\KeyCommand.cs">
-      <Link>Hobgoblin\Utils\Unsubscriber.cs</Link>
+      <Link>Hobgoblin\Utils\KeyCommand.cs</Link>
     </Compile>
     <!-- Shop MVC -->
     <Compile Include="..\..\Shop_Unity_base\Assets\Scripts\Shop\Controller\ShopController.cs">
@@ -222,6 +219,7 @@
     <Compile Include="Hobgoblin\Shop\States\InventoryBrowseState.cs" />
     <Compile Include="Hobgoblin\Inventory\InventoryMessageView.cs" />
     <Compile Include="Hobgoblin\Inventory\MoveInventorySelectionCommand.cs" />
+    <Compile Include="Hobgoblin\ToggleInventoryCommand.cs" />
     <Compile Include="Hobgoblin\Utils\IconCache.cs" />
 
   </ItemGroup>

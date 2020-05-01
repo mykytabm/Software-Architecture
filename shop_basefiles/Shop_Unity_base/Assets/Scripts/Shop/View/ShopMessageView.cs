@@ -32,16 +32,14 @@
         public void OnNext(ShopData pData)
         {
             _messages = pData.messages;
+            DrawMessages();
         }
 
-        //------------------------------------------------------------------------------------------------------------------------
-        //                                                  Update()
-        //------------------------------------------------------------------------------------------------------------------------        
-        //this method polls the shop for messages and prints them. Since the shop caches the messages, it prints the same
-        //message each frame. An event system would work better.
-        protected void Update() {
+        private void DrawMessages()
+        {
             string[] messages = _messages.ToArray();
-            if (messages.Length > 0) {
+            if (messages.Length > 0)
+            {
                 string message = messages[messages.Length - 1];
                 Debug.Log(message);
             }
