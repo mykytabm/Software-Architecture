@@ -17,6 +17,7 @@ namespace Hobgoblin.ShopCommands
         }
         public void Execute()
         {
+
             var inventory = _customer.GetComponent<Inventory>();
             if (inventory.Gold > _shopController.GetItemPrice())
             {

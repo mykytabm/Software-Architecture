@@ -52,13 +52,13 @@ namespace Hobgoblin.InventoryMvc
             //-------------------------- Add Commands to list ------------------------------//
             _keyCommands = new List<KeyCommand>()
             {
-                new KeyCommand(Key.LEFT, moveSelectionLeft),
-                new KeyCommand(Key.RIGHT, moveSelectionRight),
-                new KeyCommand(Key.UP, moveSelectionUp),
-                new KeyCommand(Key.DOWN, moveSelectionDown),
-                new KeyCommand(Key.E,equipItem),
-                new KeyCommand(Key.Q,drinkItem),
-                new KeyCommand(Key.SPACE,sellItem)
+                new KeyCommand((int)Key.LEFT, moveSelectionLeft),
+                new KeyCommand((int)Key.RIGHT, moveSelectionRight),
+                new KeyCommand((int)Key.UP, moveSelectionUp),
+                new KeyCommand((int)Key.DOWN, moveSelectionDown),
+                new KeyCommand((int)Key.E,equipItem),
+                new KeyCommand((int)Key.Q,drinkItem),
+                new KeyCommand((int)Key.SPACE,sellItem)
         };
 
             RegisterCommands();

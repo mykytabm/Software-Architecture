@@ -43,7 +43,7 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         private void CreateServices()
         {
-            _commandManager = new CommandManager();
+            _commandManager = new CommandManager(Input.GetKeyDown);
             _stepAction += _commandManager.Step;
         }
 
@@ -89,7 +89,7 @@ namespace Hobgoblin
         //------------------------------------------------------------------------------------------------------------------------        
         private void SetupCommands()
         {
-            var toggleInventory = new KeyCommand(Key.I, new ToggleInventoryCommand(this));
+            var toggleInventory = new KeyCommand((int)Key.I, new ToggleInventoryCommand(this));
             _commandManager.RegisterCommand(toggleInventory);
         }
 
