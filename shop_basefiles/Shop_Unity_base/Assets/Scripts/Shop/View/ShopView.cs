@@ -11,6 +11,7 @@
     using System;
     using Hobgoblin.Core;
     using Hobgoblin.ShopCommands;
+    using Hobgoblin.Components;
 
     //------------------------------------------------------------------------------------------------------------------------
     //                                                  ShopController()
@@ -26,8 +27,7 @@
         [SerializeField]
         private Button _buyButton;
 
-        [SerializeField]
-        private Button _sellButton;
+
 
         private Humanoid _customer;
 
@@ -45,10 +45,10 @@
         public void Initialize(ShopController pShopController, Humanoid pCustomer)
         {
             _shopController = pShopController;
+            _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
             RepopulateItemIconView(); //we need an Event system instead of this
             InitializeButtons();
             _customer = pCustomer;
-            _commandManager = ServiceLocator.Instance.GetService<CommandManager>();
 
         }
         public void Subscribe(ShopModel pModel)
@@ -113,8 +113,7 @@
             itemButton.onClick.AddListener(
                 delegate
                 {
-                    _shopController.SelectItem(item);
-                    RepopulateItemIconView(); //we need an Event system instead of this
+                    _commandManager.ExecuteCommand(new SelectShopItemCommand(_shopController, item));
                 }
             );
         }
@@ -128,8 +127,8 @@
             _buyButton.onClick.AddListener(
                 delegate
                 {
+
                     _commandManager.ExecuteCommand(new BuyItemCommand(_shopController, _customer));
-                    
                 }
             );
         }

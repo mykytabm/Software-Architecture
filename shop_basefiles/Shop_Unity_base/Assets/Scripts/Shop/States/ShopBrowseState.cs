@@ -13,16 +13,16 @@ namespace Hobgoblin.States
     //as text (messages). There is no event system, so the text is printed every frame.
     public class ShopBrowseState : MonoBehaviour
     {
-        private ShopModel shopModel;
+        private ShopModel _shopModel;
 
-        private ShopController shopController;
-        private ShopView shopView;
-        private ShopMessageView shopMessageView;
+        private ShopController _shopController;
+        private ShopView _shopView;
+        private ShopMessageView _shopMessageView;
+        private ShopItemInfoView _shopItemInfoView;
 
         //------------------------------------------------------------------------------------------------------------------------
         //                                                  Start()
         //------------------------------------------------------------------------------------------------------------------------
-        //This method gets the whole setup going
         protected void Start()
         {
             Initialize();
@@ -35,26 +35,35 @@ namespace Hobgoblin.States
         {
             var itemGenerator = new Generator(new NormalItemFactory());
             //Set up the model and controller
-            shopModel = new ShopModel(itemGenerator.CreateRandomItems(Globals.ItemsPerShop));
-            shopController = new ShopController(shopModel);
+            _shopModel = new ShopModel(itemGenerator.CreateRandomItems(Globals.ItemsPerShop));
+            _shopController = new ShopController(_shopModel);
 
             //get view from children
-            shopView = GetComponentInChildren<ShopView>();
-            shopView.Subscribe(shopModel);
-            Debug.Assert(shopView != null);
+            _shopView = GetComponentInChildren<ShopView>();
+            _shopView.Subscribe(_shopModel);
+            Debug.Assert(_shopView != null);
 
             //get mesageview from children
-            shopMessageView = GetComponentInChildren<ShopMessageView>();
-            shopMessageView.Subscribe(shopModel);
-            Debug.Assert(shopMessageView != null);
+            _shopMessageView = GetComponentInChildren<ShopMessageView>();
+            _shopMessageView.Subscribe(_shopModel);
+            Debug.Assert(_shopMessageView != null);
+
+            //get itemInfoView from children
+            _shopItemInfoView = GetComponentInChildren<ShopItemInfoView>();
+            _shopItemInfoView.Subscribe(_shopModel);
 
             //setup model and controller
 
             //link them
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            Humanoid playerHumanoid = player.GetComponent<Player>().GetHumanoid();
-            shopView.Initialize(shopController, playerHumanoid);//view1
-            shopMessageView.Initialize(shopModel);//view2
+
+
+            _shopView.Initialize(_shopController, Game.PlayerHumanoid);//view1
+            _shopMessageView.Initialize(_shopModel);//view2
+        }
+
+        public ShopController ShopController()
+        {
+            return _shopController;
         }
 
     }

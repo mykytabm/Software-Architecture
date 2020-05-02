@@ -21,6 +21,8 @@ namespace Hobgoblin.InventoryMvc
             _inventory = pInventory;
             _observers = new List<IObserver<InventoryData>>();
             _messages = new List<string>();
+            _inventory.ContentUpdated += UpdateData;
+            _inventory.ContentUpdated += NotifyObservers;
 
             _data = new InventoryData();
             UpdateData();
@@ -50,6 +52,10 @@ namespace Hobgoblin.InventoryMvc
         public List<Item> GetItems()
         {
             return _inventory.GetItems();
+        }
+        public int GetItemId(Item pItem)
+        {
+            return _inventory.GetItemIndex(pItem);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -83,8 +89,6 @@ namespace Hobgoblin.InventoryMvc
             {
                 int index = _inventory.GetItems().IndexOf(pItem);
                 _selectedItemIndex = index;
-                UpdateData();
-                NotifyObservers();
             }
         }
 

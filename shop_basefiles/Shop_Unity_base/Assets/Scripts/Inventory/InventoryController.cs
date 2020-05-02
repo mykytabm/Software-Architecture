@@ -19,7 +19,19 @@ namespace Hobgoblin.InventoryMvc
             if (pItem != null)
             {
                 _model.SelectItem(pItem);
+                UpdateData();
+                NotifyObservers();
+
             }
+        }
+        public int GetItemId(Item pItem)
+        {
+            return _model.GetItemId(pItem);
+        }
+
+        public void SetSelectedItemId(int pId)
+        {
+            _model.SelectItemByIndex(pId);
         }
 
         public void RemoveCurrentItem()

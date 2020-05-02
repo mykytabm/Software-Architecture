@@ -14,7 +14,7 @@ namespace Hobgoblin.Components
         private int _gold;
 
         public int Gold { get { return _gold; } }
-
+        public Action ContentUpdated;
         public Inventory(int pSlots, int pGold)
         {
             _items = new List<Item>(pSlots);
@@ -39,12 +39,15 @@ namespace Hobgoblin.Components
         public void AddGold(int pGold)
         {
             _gold += pGold;
+            ContentUpdated?.Invoke();
         }
 
         public void AddItem(Item pItem)
         {
             _items.Add(pItem);
+            ContentUpdated?.Invoke();
         }
+
         public Item GetItemAt(int pId)
         {
             if (pId >= 0 && pId < _items.Count)
@@ -59,16 +62,23 @@ namespace Hobgoblin.Components
         public void RemoveItem(Item pItem)
         {
             _items.Remove(pItem);
+            ContentUpdated?.Invoke();
+        }
+        public int GetItemIndex(Item pItem)
+        {
+            if (_items.Contains(pItem))
+            {
+                return _items.IndexOf(pItem);
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public List<Item> GetItems()
         {
             return HUtils.DeepCopyList(_items);
-        }
-
-        private bool SameItemExists(Item pItem)
-        {
-            return _items.Exists(item => item == pItem);
         }
 
         public override IPrototype Clone()
